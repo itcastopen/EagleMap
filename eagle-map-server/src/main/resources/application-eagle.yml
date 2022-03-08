@@ -1,0 +1,44 @@
+server:
+  port: 8484
+eagle:
+  baidu:
+    enable: true
+    server:
+      id: 25608934
+      name: EagleMap-Server
+      ak: KurAMXMIh8UaUkGAZjXjz640G2AQQqDk
+      type: 服务端
+    browser:
+      id: 25608952
+      name: EagleMap-Browser
+      ak: dBhLTUDqFj36qTBQ6kestrDgoAn0GcIm
+      type: 浏览器端
+    trace-servers:
+      - id: 231517
+        name: 轨迹服务01
+        type: 其他行业
+        date: 2022-02-28
+      - id: 231518
+        name: 轨迹服务02
+        type: 其他行业
+        date: 2022-02-28
+      - id: 231519
+        name: 轨迹服务03
+        type: 其他行业
+        date: 2022-02-28
+      - id: 231526
+        name: 轨迹服务04
+        type: 其他行业
+        date: 2022-03-01
+  amap:
+    enable: true
+    server:
+      name: EagleMap-Server
+      ak: 7488e66ba5375a2b1dba9a154742a2c4
+      type: Web服务
+    browser:
+      name: EagleMap-JS
+      ak: 65f1bb0520d959878283e5a3721a8be9
+      sk: 410148f85c0b68de247373f5d4ba0b39
+      type: Web端
+  timeout: 10000 #请求超时时间，单位：毫秒

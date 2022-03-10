@@ -14,4 +14,5 @@ public class EagleConfig {
     private String baiduYingYanApi;
     private String amapWebApi;
     private String amapTsApi;
+    private TraceImageConfig traceImage;
 }

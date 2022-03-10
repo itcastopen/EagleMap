@@ -16,5 +16,7 @@ public class TraceParam {
     private String name; //名称
     private List<Map<String, Object>> pointList; //轨迹点
     private Map<String, Object> param; //其他请求参数
+    private Integer width; //缩略图宽度
+    private Integer height; //缩略图高度
 
 }

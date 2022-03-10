@@ -42,3 +42,10 @@ eagle:
       sk: 410148f85c0b68de247373f5d4ba0b39
       type: Web端
   timeout: 10000 #请求超时时间，单位：毫秒
+  trace-image: #轨迹缩略图
+    scale: 0.9 #缩放比，默认0.9
+    background: "#FFFFFF" #背景颜色
+    trace-color: "#6699FF" #轨迹颜色
+    stroke-width: 3 #画笔宽度
+    width: 300 #生成图片的宽度
+    height: 300 #生成图片的高度

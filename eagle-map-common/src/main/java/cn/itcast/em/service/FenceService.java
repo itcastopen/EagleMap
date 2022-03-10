@@ -97,4 +97,14 @@ public interface FenceService extends EagleMapService {
      * @return 围栏对象数据
      */
     R<TraceFence> queryByFenceId(Long serverId, Long fenceId);
+
+    /**
+     * 查询终端在围栏中的状态
+     *
+     * @param serverId   服务id
+     * @param fenceId    围栏id
+     * @param terminalId 终端id
+     * @return 是否在围栏中
+     */
+    R<Boolean> queryTerminalStatus(Long serverId, Long fenceId, Long terminalId);
 }

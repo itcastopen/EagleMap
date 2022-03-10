@@ -1,18 +1,19 @@
-package cn.itcast.em.server.service.impl.amap;
+package cn.itcast.em.server.service.impl.baidu;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import cn.itcast.em.config.AMapServerConfig;
+import cn.itcast.em.config.BaiduServerConfig;
 import cn.itcast.em.config.EagleConfig;
+import cn.itcast.em.enums.CoordinateType;
 import cn.itcast.em.enums.FenceType;
 import cn.itcast.em.enums.ServerType;
 import cn.itcast.em.exception.EagleMapException;
 import cn.itcast.em.mapper.TraceFenceMapper;
 import cn.itcast.em.mapper.TraceTerminalMapper;
-import cn.itcast.em.pojo.Trace;
 import cn.itcast.em.pojo.TraceFence;
 import cn.itcast.em.pojo.TraceTerminal;
 import cn.itcast.em.service.EagleOrdered;
@@ -26,24 +27,27 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 高德地图电子围栏实现，文档：https://lbs.amap.com/api/track/lieying-kaifa/api/track_fence
+ * 百度地图电子围栏实现，文档：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/geofence
  *
  * @author zzj
  * @version 1.0
- * @date 2022/3/7
+ * @date 2022/3/9
  */
-@Service("AMapFenceService")
-@ConditionalOnBean(AMapServerConfig.class)
-public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFence> implements FenceService {
+@Service("BaiduFenceService")
+@ConditionalOnBean(BaiduServerConfig.class)
+public class BaiduFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFence> implements FenceService {
 
     @Resource
     private EagleConfig eagleConfig;
     @Resource
-    private AMapWebApiService aMapWebApiService;
+    private BaiduWebApiService baiduWebApiService;
     @Resource
     private TraceTerminalMapper traceTerminalMapper;
 
@@ -64,30 +68,30 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
         }
         //封装参数
         Map<String, Object> requestParam = new HashMap<>();
-        requestParam.put("sid", serverId);
-        requestParam.put("name", name);
-        requestParam.put("desc", desc);
+        requestParam.put("service_id", serverId);
+        requestParam.put("fence_name", name);
+        requestParam.put("coord_type", CoordinateType.EAGLE.getValue());
         //由于不同类型的围栏参数是不一样的，所以通过Map传入，让后将其封装到请求map中
         for (Map.Entry<String, Object> entry : param.entrySet()) {
             requestParam.put(entry.getKey(), entry.getValue());
         }
 
-        String url = this.eagleConfig.getAmapTsApi();
+        String url = this.eagleConfig.getBaiduYingYanApi();
         switch (fenceType) {
             case CIRCLE: {
-                url += "/v1/track/geofence/add/circle";
+                url += "/api/v3/fence/createcirclefence";
                 break;
             }
             case POLYGON: {
-                url += "/v1/track/geofence/add/polygon";
+                url += "/api/v3/fence/createpolygonfence";
                 break;
             }
             case POLYLINE: {
-                url += "/v1/track/geofence/add/polyline";
+                url += "/api/v3/fence/createpolylinefence";
                 break;
             }
             case DISTRICT: {
-                url += "/v1/track/geofence/add/district";
+                url += "/api/v3/fence/createdistrictfence";
                 break;
             }
             default: {
@@ -95,16 +99,15 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
             }
         }
 
-        return this.aMapWebApiService.doPost(url, requestParam, response -> {
+        return this.baiduWebApiService.doPost(url, requestParam, response -> {
             String body = response.body();
             JSONObject json = JSONUtil.parseObj(body);
-            if (!response.isOk() || json.getInt("errcode") != 10000) {
+            if (!response.isOk() || json.getInt("status") != 0) {
                 return R.error(body);
             }
 
             //获取到围栏id返回
-            JSONObject data = json.getJSONObject("data");
-            Long fenceId = data.getLong("gfid");
+            Long fenceId = json.getLong("fence_id");
 
             //存储围栏数据到数据库
             TraceFence traceFence = new TraceFence();
@@ -112,7 +115,7 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
             traceFence.setServerId(serverId);
             traceFence.setName(name);
             traceFence.setDesc(desc);
-            traceFence.setProvider(ServerType.AMAP);
+            traceFence.setProvider(ServerType.BAIDU);
             traceFence.setParam(JSONUtil.toJsonStr(param));
             traceFence.setType(fenceType);
             super.save(traceFence);
@@ -139,31 +142,31 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
         }
         //封装参数
         Map<String, Object> requestParam = new HashMap<>();
-        requestParam.put("sid", serverId);
-        requestParam.put("gfid", fenceId); //围栏id
-        requestParam.put("name", name);
-        requestParam.put("desc", desc);
+        requestParam.put("service_id", serverId);
+        requestParam.put("fence_id", fenceId); //围栏id
+        requestParam.put("fence_name", name);
+        requestParam.put("coord_type", CoordinateType.EAGLE.getValue());
         //由于不同类型的围栏参数是不一样的，所以通过Map传入，让后将其封装到请求map中
         for (Map.Entry<String, Object> entry : param.entrySet()) {
             requestParam.put(entry.getKey(), entry.getValue());
         }
 
-        String url = this.eagleConfig.getAmapTsApi();
+        String url = this.eagleConfig.getBaiduYingYanApi();
         switch (fenceType) {
             case CIRCLE: {
-                url += "/v1/track/geofence/update/circle";
+                url += "/api/v3/fence/updatecirclefence";
                 break;
             }
             case POLYGON: {
-                url += "/v1/track/geofence/update/polygon";
+                url += "/api/v3/fence/updatepolygonfence";
                 break;
             }
             case POLYLINE: {
-                url += "/v1/track/geofence/update/polyline";
+                url += "/api/v3/fence/updatepolylinefence";
                 break;
             }
             case DISTRICT: {
-                url += "/v1/track/geofence/update/district";
+                url += "/api/v3/fence/updatedistrictfence";
                 break;
             }
             default: {
@@ -171,10 +174,10 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
             }
         }
 
-        return this.aMapWebApiService.doPost(url, requestParam, response -> {
+        return this.baiduWebApiService.doPost(url, requestParam, response -> {
             String body = response.body();
             JSONObject json = JSONUtil.parseObj(body);
-            if (!response.isOk() || json.getInt("errcode") != 10000) {
+            if (!response.isOk() || json.getInt("status") != 0) {
                 return R.error(body);
             }
             //根据围栏id更新数据
@@ -185,7 +188,7 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
 
             LambdaQueryWrapper<TraceFence> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(TraceFence::getFenceId, fenceId);
-            queryWrapper.eq(TraceFence::getProvider, ServerType.AMAP);
+            queryWrapper.eq(TraceFence::getProvider, ServerType.BAIDU);
             queryWrapper.eq(TraceFence::getServerId, serverId);
             super.update(traceFence, queryWrapper);
 
@@ -207,22 +210,22 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
         }
         //封装参数
         Map<String, Object> requestParam = new HashMap<>();
-        requestParam.put("sid", serverId);
-        requestParam.put("gfids", ArrayUtil.join(fenceIds, ",")); //围栏id
+        requestParam.put("service_id", serverId);
+        requestParam.put("fence_ids", ArrayUtil.join(fenceIds, ",")); //围栏id
 
-        String url = this.eagleConfig.getAmapTsApi() + "/v1/track/geofence/delete";
+        String url = this.eagleConfig.getBaiduYingYanApi() + "/api/v3/fence/delete";
 
-        return this.aMapWebApiService.doPost(url, requestParam, response -> {
+        return this.baiduWebApiService.doPost(url, requestParam, response -> {
             String body = response.body();
             JSONObject json = JSONUtil.parseObj(body);
-            if (!response.isOk() || json.getInt("errcode") != 10000) {
+            if (!response.isOk() || json.getInt("status") != 0) {
                 return R.error(body);
             }
 
             //删除数据库中的围栏数据
             LambdaQueryWrapper<TraceFence> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.in(TraceFence::getFenceId, fenceIds);
-            queryWrapper.eq(TraceFence::getProvider, ServerType.AMAP);
+            queryWrapper.eq(TraceFence::getProvider, ServerType.BAIDU);
             queryWrapper.eq(TraceFence::getServerId, serverId);
             super.remove(queryWrapper);
 
@@ -240,7 +243,7 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
      */
     @Override
     public R<String> bindTerminalFence(Long serverId, Long fenceId, Long... terminalIds) {
-        String url = this.eagleConfig.getAmapTsApi() + "/v1/track/geofence/terminal/bind";
+        String url = this.eagleConfig.getBaiduYingYanApi() + "/api/v3/fence/addmonitoredperson";
         return this.executeBindOrUnBind(url, serverId, fenceId, terminalIds);
     }
 
@@ -254,7 +257,7 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
      */
     @Override
     public R<String> unbindTerminalFence(Long serverId, Long fenceId, Long... terminalIds) {
-        String url = this.eagleConfig.getAmapTsApi() + "/v1/track/geofence/terminal/unbind";
+        String url = this.eagleConfig.getBaiduYingYanApi() + "/api/v3/fence/deletemonitoredperson";
         return this.executeBindOrUnBind(url, serverId, fenceId, terminalIds);
     }
 
@@ -271,16 +274,24 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
         if (ArrayUtil.isEmpty(terminalIds) || terminalIds.length > 100) {
             return R.error("The number of terminals should be between 0 and 100.");
         }
+
+        //根据终端id查询终端数据
+        LambdaQueryWrapper<TraceTerminal> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(TraceTerminal::getId, terminalIds);
+        List<TraceTerminal> traceTerminalList = this.traceTerminalMapper.selectList(queryWrapper);
+
         //封装参数
         Map<String, Object> requestParam = new HashMap<>();
-        requestParam.put("sid", serverId);
-        requestParam.put("gfid", fenceId); //围栏id
-        requestParam.put("tids", ArrayUtil.join(terminalIds, ",")); //终端id
+        requestParam.put("service_id", serverId);
+        requestParam.put("fence_id", fenceId); //围栏id
+        requestParam.put("monitored_person", CollUtil.join(traceTerminalList.stream()
+                .map(traceTerminal -> traceTerminal.getName())
+                .collect(Collectors.toList()), ",")); //终端名称以逗号分割
 
-        return this.aMapWebApiService.doPost(url, requestParam, response -> {
+        return this.baiduWebApiService.doPost(url, requestParam, response -> {
             String body = response.body();
             JSONObject json = JSONUtil.parseObj(body);
-            if (!response.isOk() || json.getInt("errcode") != 10000) {
+            if (!response.isOk() || json.getInt("status") != 0) {
                 return R.error(body);
             }
             return R.success();
@@ -298,42 +309,36 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
      */
     @Override
     public R<PageResult<TraceTerminal>> queryTerminalFenceList(Long serverId, Long fenceId, Integer page, Integer pageSize) {
-        if (pageSize > 100) {
-            throw new RuntimeException("PageSize cannot be greater than 100.");
-        }
 
-        String url = this.eagleConfig.getAmapTsApi() + "/v1/track/geofence/terminal/list";
+        String url = this.eagleConfig.getBaiduYingYanApi() + "/api/v3/fence/listmonitoredperson";
         //封装参数
         Map<String, Object> requestParam = new HashMap<>();
-        requestParam.put("sid", serverId);
-        requestParam.put("gfid", fenceId); //围栏id
-        requestParam.put("page", page); //查询页数
-        requestParam.put("pagesize", pageSize); //单页数据数量，取值 [1, 100]
+        requestParam.put("service_id", serverId);
+        requestParam.put("fence_id", fenceId); //围栏id
+        requestParam.put("page_index", page); //查询页数
+        requestParam.put("page_size", pageSize); //单页数据数量
         PageResult<TraceTerminal> pageResult = new PageResult<>();
         List<TraceTerminal> list;
         try {
-            list = this.aMapWebApiService.doGet(url, requestParam, response -> {
+            list = this.baiduWebApiService.doGet(url, requestParam, response -> {
                 String body = response.body();
                 JSONObject json = JSONUtil.parseObj(body);
-                if (!response.isOk() || json.getInt("errcode") != 10000) {
+                if (!response.isOk() || json.getInt("status") != 0) {
                     throw EagleMapException.builder().msg(body).build();
                 }
 
-                JSONObject data = json.getJSONObject("data");
-                pageResult.setTotal(data.getInt("count"));
-                List<Long> terminalIdList = data.getJSONArray("results").stream()
-                        .map(o -> ((JSONObject) o).getLong("tid"))
-                        .collect(Collectors.toList());
+                pageResult.setTotal(json.getInt("total"));
+                JSONArray terminalNames = json.getJSONArray("monitored_person");
 
-                if (CollUtil.isEmpty(terminalIdList)) {
+                if (CollUtil.isEmpty(terminalNames)) {
                     return Collections.emptyList();
                 }
 
                 //查询终端列表
                 LambdaQueryWrapper<TraceTerminal> queryWrapper = new LambdaQueryWrapper<>();
-                queryWrapper.eq(TraceTerminal::getProvider, ServerType.AMAP);
+                queryWrapper.eq(TraceTerminal::getProvider, ServerType.BAIDU);
                 queryWrapper.eq(TraceTerminal::getServerId, serverId);
-                queryWrapper.in(TraceTerminal::getTerminalId, terminalIdList);
+                queryWrapper.in(TraceTerminal::getName, terminalNames);
                 return this.traceTerminalMapper.selectList(queryWrapper);
             });
         } catch (EagleMapException e) {
@@ -357,7 +362,7 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
     public R<PageResult<TraceFence>> queryFenceList(Integer page, Integer pageSize) {
         Page<TraceFence> traceFencePage = new Page<>(page, pageSize);
         LambdaQueryWrapper<TraceFence> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(TraceFence::getProvider, ServerType.AMAP);
+        queryWrapper.eq(TraceFence::getProvider, ServerType.BAIDU);
         queryWrapper.orderByDesc(TraceFence::getCreated);
         super.page(traceFencePage, queryWrapper);
         return R.success(new PageResult<TraceFence>().convert(traceFencePage));
@@ -373,7 +378,7 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
     @Override
     public R<TraceFence> queryByFenceId(Long serverId, Long fenceId) {
         LambdaQueryWrapper<TraceFence> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(TraceFence::getProvider, ServerType.AMAP);
+        queryWrapper.eq(TraceFence::getProvider, ServerType.BAIDU);
         queryWrapper.eq(TraceFence::getFenceId, fenceId);
         queryWrapper.eq(TraceFence::getServerId, serverId);
         TraceFence traceFence = super.getOne(queryWrapper);
@@ -393,31 +398,29 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
      */
     @Override
     public R<Boolean> queryTerminalStatus(Long serverId, Long fenceId, Long terminalId) {
+        //查询终端数据
+        TraceTerminal traceTerminal = this.traceTerminalMapper.selectById(terminalId);
+
         //封装参数
         Map<String, Object> requestParam = new HashMap<>();
-        requestParam.put("sid", serverId);
-        requestParam.put("tid", terminalId);
-        requestParam.put("gfids", fenceId);
+        requestParam.put("service_id", serverId);
+        requestParam.put("fence_ids", fenceId); //围栏id
+        requestParam.put("monitored_person", traceTerminal.getName());
 
-        String url = this.eagleConfig.getAmapTsApi() + "/v1/track/geofence/status/terminal";
+        String url = this.eagleConfig.getBaiduYingYanApi() + "/api/v3/fence/querystatus";
 
-        return this.aMapWebApiService.doGet(url, requestParam, response -> {
+        return this.baiduWebApiService.doGet(url, requestParam, response -> {
             String body = response.body();
             JSONObject json = JSONUtil.parseObj(body);
-            if (!response.isOk() || json.getInt("errcode") != 10000) {
+            if (!response.isOk() || json.getInt("status") != 0) {
                 return R.error(body);
             }
-
-            //获取到围栏id返回
-            JSONObject data = json.getJSONObject("data");
-            JSONArray results = data.getJSONArray("results");
-            JSONObject result = (JSONObject) results.get(0);
-            return R.success(result.getInt("in") == 1);
+            return R.success(StrUtil.contains(body, "\"in\""));
         });
     }
 
     @Override
     public int getOrder() {
-        return EagleOrdered.ONE;
+        return EagleOrdered.TWO;
     }
 }

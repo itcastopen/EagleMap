@@ -188,4 +188,13 @@ public class FenceController extends BaseController<FenceService> {
         return fenceService.queryByFenceId(fenceParam.getServerId(), fenceParam.getFenceId());
     }
 
+    /**
+     * 查询终端在围栏中的状态，是否超出围栏
+     */
+    @GetMapping("status")
+    public R<Boolean> queryTerminalStatus(@RequestBody FenceParam fenceParam) {
+        FenceService fenceService = super.chooseService(fenceParam.getProvider());
+        return fenceService.queryTerminalStatus(fenceParam.getServerId(), fenceParam.getFenceId(), fenceParam.getTerminalId());
+    }
+
 }

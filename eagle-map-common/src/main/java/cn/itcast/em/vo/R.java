@@ -2,6 +2,7 @@ package cn.itcast.em.vo;
 
 import cn.hutool.core.util.NumberUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,10 +17,11 @@ public class R<T> implements Serializable {
 
     private static final long serialVersionUID = -4326147203336606257L;
 
-    private Integer code; //编码：0成功，1和失败
-
-    private String msg; //提示消息
-
+    @ApiModelProperty(value = "状态编码：0-成功，1-失败", required = true)
+    private Integer code;
+    @ApiModelProperty(value = "提示消息", required = true)
+    private String msg;
+    @ApiModelProperty(value = "响应数据", required = true)
     private T data; //数据
 
     public static <T> R<T> success() {

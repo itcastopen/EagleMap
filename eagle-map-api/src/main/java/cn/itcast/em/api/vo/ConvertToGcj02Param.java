@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class ConvertToGcj02Param {
 
-    @ApiModelProperty(value = "服务提供商，必须大写", required = true, example = "NONE")
+    @ApiModelProperty(value = "服务提供商，必须大写，默认为：百度地图", example = "NONE")
     private ServerType provider = ServerType.NONE;
     @ApiModelProperty(value = "原坐标类型，可用参数（必须大写）：BAIDU、AMAP、QQ、GPS、SOU_GOU、EAGLE", required = true, example = "BAIDU")
     private String fromType;

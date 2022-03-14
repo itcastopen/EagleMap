@@ -27,7 +27,7 @@ public class IPController extends BaseController<IPService> {
      */
     @ApiImplicitParams({@ApiImplicitParam(name = "ip", value = "IP地址，如：114.242.26.45", required = true),
             @ApiImplicitParam(name = "type", value = "IP类型,值为 4 或 6，4 表示 IPv4，6 表示 IPv6"),
-            @ApiImplicitParam(name = "provider", value = "服务提供商，必须大写，如：BAIDU,AMAP,NONE")})
+            @ApiImplicitParam(name = "provider", value = "服务提供商，必须大写，如：BAIDU,AMAP,NONE，默认：高德地图")})
     @ApiOperation(value = "IP定位", notes = "IP定位是一套简单的HTTP接口，根据用户输入的IP地址，能够快速的帮用户定位IP的所在位置。")
     @GetMapping
     public R<IpResultVo> query(@RequestParam("ip") String ip,

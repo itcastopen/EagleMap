@@ -7,10 +7,13 @@ import cn.itcast.em.enums.ServerType;
 import cn.itcast.em.pojo.TraceServer;
 import cn.itcast.em.service.TraceServerService;
 import cn.itcast.em.vo.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Api(tags = "轨迹服务管理")
 @RequestMapping("/api/trace/server")
 @RestController
 public class TraceServerController extends BaseController<TraceServerService> {
@@ -21,6 +24,7 @@ public class TraceServerController extends BaseController<TraceServerService> {
      * @param traceServerParam
      * @return 成功返回服务id
      */
+    @ApiOperation(value = "创建轨迹服务", notes = "使用轨迹功能必须先创建轨迹服务，百度地图不支持通过接口创建，请通过百度地图的轨迹服务管理系统创建，高德地图支持通过接口创建。<br/>百度地图管理地址：https://lbsyun.baidu.com/trace/admin/service")
     @PostMapping
     public R<String> create(@RequestBody TraceServerParam traceServerParam) {
         TraceServerService traceServerService = super.chooseService(traceServerParam.getProvider());
@@ -37,6 +41,7 @@ public class TraceServerController extends BaseController<TraceServerService> {
      * @param traceServerParam
      * @return
      */
+    @ApiOperation(value = "删除轨迹服务", notes = "百度地图不支持通过接口删除，此方法仅仅是从数据库中删除数据，并不会从百度地图中删除，高德地图支持通过接口删除。<br/>百度地图管理地址：https://lbsyun.baidu.com/trace/admin/service")
     @DeleteMapping
     public R<String> delete(@RequestBody TraceServerParam traceServerParam) {
         TraceServerService traceServerService = super.chooseService(traceServerParam.getProvider());
@@ -53,6 +58,7 @@ public class TraceServerController extends BaseController<TraceServerService> {
      * @param traceServerParam
      * @return
      */
+    @ApiOperation(value = "更新轨迹服务", notes = "百度地图不支持通过接口更新，此方法仅仅是从数据库中更新数据，并不会从百度地图中更新，高德地图支持通过接口更新。<br/>百度地图管理地址：https://lbsyun.baidu.com/trace/admin/service")
     @PutMapping
     public R<String> update(@RequestBody TraceServerParam traceServerParam) {
         TraceServerService traceServerService = super.chooseService(traceServerParam.getProvider());
@@ -68,6 +74,7 @@ public class TraceServerController extends BaseController<TraceServerService> {
      *
      * @return
      */
+    @ApiOperation(value = "查询单个轨迹服务", notes = "通过serverId查询单个轨迹服务信息")
     @GetMapping("{serverId}")
     public R<TraceServer> queryById(@PathVariable("serverId") Long serverId,
                                     @RequestParam(value = "provider", defaultValue = "NONE") String provider) {
@@ -84,6 +91,7 @@ public class TraceServerController extends BaseController<TraceServerService> {
      *
      * @return
      */
+    @ApiOperation(value = "查询所有的轨迹服务", notes = "查询所有的轨迹服务。")
     @GetMapping
     public R<List<TraceServer>> queryAll(@RequestParam(value = "provider", defaultValue = "NONE") String provider) {
         TraceServerService traceServerService = super.chooseService(ServerType.valueOf(provider));

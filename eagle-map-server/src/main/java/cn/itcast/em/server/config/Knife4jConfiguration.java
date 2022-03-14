@@ -18,8 +18,8 @@ public class Knife4jConfiguration {
     public Docket defaultApi2() {
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
-                        //.title("swagger-bootstrap-ui-demo RESTful APIs")
-                        .description("# swagger-bootstrap-ui-demo RESTful APIs")
+                        .title("EagleMap接口文档")
+                        .description("EagleMap是一个功能强大、简单易用、支持多地图服务商的地图中台服务系统。")
                         .termsOfServiceUrl("http://www.itcast.cn/")
                         .contact(new Contact("传智教育·研究院", "http://www.itcast.cn/", "yjy@itcast.cn"))
                         .version("1.0")

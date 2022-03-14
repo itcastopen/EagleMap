@@ -3,12 +3,18 @@ package cn.itcast.em.api.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.itcast.em.api.vo.TraceTerminalParam;
+import cn.itcast.em.enums.ServerType;
 import cn.itcast.em.pojo.TraceTerminal;
 import cn.itcast.em.service.TraceTerminalService;
 import cn.itcast.em.vo.PageResult;
 import cn.itcast.em.vo.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+@Api(tags = "轨迹终端管理")
 @RequestMapping("/api/trace/terminal")
 @RestController
 public class TraceTerminalController extends BaseController<TraceTerminalService> {
@@ -19,6 +25,7 @@ public class TraceTerminalController extends BaseController<TraceTerminalService
      * @param traceTerminalParam
      * @return
      */
+    @ApiOperation(value = "创建终端", notes = "百度地图：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/entity<br/>高德地图：https://lbs.amap.com/api/track/lieying-kaifa/api/terminal")
     @PostMapping
     public R<String> create(@RequestBody TraceTerminalParam traceTerminalParam) {
         TraceTerminalService traceTerminalService = super.chooseService(traceTerminalParam.getProvider());
@@ -48,6 +55,7 @@ public class TraceTerminalController extends BaseController<TraceTerminalService
      * @param traceTerminalParam
      * @return
      */
+    @ApiOperation(value = "删除终端", notes = "百度地图：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/entity<br/>高德地图：https://lbs.amap.com/api/track/lieying-kaifa/api/terminal")
     @DeleteMapping
     public R<String> delete(@RequestBody TraceTerminalParam traceTerminalParam) {
         TraceTerminalService traceTerminalService = super.chooseService(traceTerminalParam.getProvider());
@@ -64,6 +72,7 @@ public class TraceTerminalController extends BaseController<TraceTerminalService
      * @param traceTerminalParam
      * @return
      */
+    @ApiOperation(value = "更新终端", notes = "百度地图：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/entity<br/>高德地图：https://lbs.amap.com/api/track/lieying-kaifa/api/terminal")
     @PutMapping
     public R<String> update(@RequestBody TraceTerminalParam traceTerminalParam) {
         TraceTerminalService traceTerminalService = super.chooseService(traceTerminalParam.getProvider());
@@ -77,18 +86,27 @@ public class TraceTerminalController extends BaseController<TraceTerminalService
     /**
      * 查询列表
      *
-     * @param traceTerminalParam
      * @param page
      * @param pageSize
      * @return
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "provider", value = "服务提供商，必须大写，如：BAIDU,AMAP,NONE，默认：高德地图", required = true),
+            @ApiImplicitParam(name = "serverId", value = "服务id"),
+            @ApiImplicitParam(name = "terminalId", value = "终端id，非必须，如果指定就按照终端id查询，否则查询列表"),
+            @ApiImplicitParam(name = "name", value = "终端名称，非必须，如果指定就按照终端名称查询，否则查询列表"),
+            @ApiImplicitParam(name = "page", value = "页数，默认：1"),
+            @ApiImplicitParam(name = "pageSize", value = "页面大小，默认：50")})
+    @ApiOperation(value = "查询终端列表", notes = "查询终端列表，如果指定了 终端id 或 名称 将查询具体的数据，否则查询列表数据")
     @GetMapping
-    public R<PageResult<TraceTerminal>> queryList(@RequestBody TraceTerminalParam traceTerminalParam,
+    public R<PageResult<TraceTerminal>> queryList(@RequestParam(value = "provider", defaultValue = "NONE") ServerType provider,
+                                                  @RequestParam(value = "serverId") Long serverId,
+                                                  @RequestParam(value = "terminalId", required = false) Long terminalId,
+                                                  @RequestParam(value = "name", required = false) String name,
                                                   @RequestParam(value = "page", defaultValue = "1") Integer page,
                                                   @RequestParam(value = "pageSize", defaultValue = "50") Integer pageSize) {
-        TraceTerminalService traceTerminalService = super.chooseService(traceTerminalParam.getProvider());
-        PageResult<TraceTerminal> pageResult = traceTerminalService.queryList(traceTerminalParam.getServerId(),
-                traceTerminalParam.getTerminalId(), traceTerminalParam.getName(), page, pageSize);
+        TraceTerminalService traceTerminalService = super.chooseService(provider);
+        PageResult<TraceTerminal> pageResult = traceTerminalService.queryList(serverId, terminalId, name, page, pageSize);
         return R.success(pageResult);
     }
 }

@@ -7,6 +7,8 @@ import cn.itcast.em.pojo.TraceTerminal;
 import cn.itcast.em.service.FenceService;
 import cn.itcast.em.vo.PageResult;
 import cn.itcast.em.vo.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * @version 1.0
  * @date 2022/3/8
  */
+@Api(tags = "电子围栏服务")
 @RequestMapping("/api/fence")
 @RestController
 public class FenceController extends BaseController<FenceService> {
@@ -26,6 +29,7 @@ public class FenceController extends BaseController<FenceService> {
      * @param fenceParam
      * @return
      */
+    @ApiOperation(value = "创建圆形围栏", notes = "具体参数参考官方文档：<br/>百度地图：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/geofence<br/>高德地图：https://lbs.amap.com/api/track/lieying-kaifa/api/track_fence")
     @PostMapping("circle")
     public R<Long> createCircleFence(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());
@@ -39,6 +43,7 @@ public class FenceController extends BaseController<FenceService> {
      * @param fenceParam
      * @return
      */
+    @ApiOperation(value = "创建多边形围栏", notes = "具体参数参考官方文档：<br/>百度地图：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/geofence<br/>高德地图：https://lbs.amap.com/api/track/lieying-kaifa/api/track_fence")
     @PostMapping("polygon")
     public R<Long> createPolygonFence(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());
@@ -52,6 +57,7 @@ public class FenceController extends BaseController<FenceService> {
      * @param fenceParam
      * @return
      */
+    @ApiOperation(value = "创建线形围栏", notes = "具体参数参考官方文档：<br/>百度地图：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/geofence<br/>高德地图：https://lbs.amap.com/api/track/lieying-kaifa/api/track_fence")
     @PostMapping("polyline")
     public R<Long> createPolylineFence(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());
@@ -65,6 +71,7 @@ public class FenceController extends BaseController<FenceService> {
      * @param fenceParam
      * @return
      */
+    @ApiOperation(value = "创建行政区划围栏", notes = "具体参数参考官方文档：<br/>百度地图：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/geofence<br/>高德地图：https://lbs.amap.com/api/track/lieying-kaifa/api/track_fence")
     @PostMapping("district")
     public R<Long> createDistrictFence(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());
@@ -78,6 +85,7 @@ public class FenceController extends BaseController<FenceService> {
      * @param fenceParam
      * @return
      */
+    @ApiOperation(value = "更新圆形围栏", notes = "具体参数参考官方文档：<br/>百度地图：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/geofence<br/>高德地图：https://lbs.amap.com/api/track/lieying-kaifa/api/track_fence")
     @PutMapping("circle")
     public R<String> updateCircleFence(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());
@@ -91,6 +99,7 @@ public class FenceController extends BaseController<FenceService> {
      * @param fenceParam
      * @return
      */
+    @ApiOperation(value = "更新多边形围栏", notes = "具体参数参考官方文档：<br/>百度地图：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/geofence<br/>高德地图：https://lbs.amap.com/api/track/lieying-kaifa/api/track_fence")
     @PutMapping("polygon")
     public R<String> updatePolygonFence(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());
@@ -104,6 +113,7 @@ public class FenceController extends BaseController<FenceService> {
      * @param fenceParam
      * @return
      */
+    @ApiOperation(value = "更新线形围栏", notes = "具体参数参考官方文档：<br/>百度地图：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/geofence<br/>高德地图：https://lbs.amap.com/api/track/lieying-kaifa/api/track_fence")
     @PutMapping("polyline")
     public R<String> updatePolylineFence(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());
@@ -117,6 +127,7 @@ public class FenceController extends BaseController<FenceService> {
      * @param fenceParam
      * @return
      */
+    @ApiOperation(value = "更新行政区划围栏", notes = "具体参数参考官方文档：<br/>百度地图：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/geofence<br/>高德地图：https://lbs.amap.com/api/track/lieying-kaifa/api/track_fence")
     @PutMapping("district")
     public R<String> updateDistrictFence(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());
@@ -131,6 +142,7 @@ public class FenceController extends BaseController<FenceService> {
      * @param fenceParam
      * @return
      */
+    @ApiOperation(value = "删除围栏", notes = "必须参数：serverId、fenceIds")
     @DeleteMapping
     public R<String> deleteFence(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());
@@ -143,6 +155,7 @@ public class FenceController extends BaseController<FenceService> {
      * @param fenceParam
      * @return
      */
+    @ApiOperation(value = "绑定终端到围栏中", notes = "必须参数：serverId、fenceId、terminalIds")
     @PostMapping("bind")
     public R<String> bindTerminalFence(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());
@@ -155,6 +168,7 @@ public class FenceController extends BaseController<FenceService> {
      * @param fenceParam
      * @return
      */
+    @ApiOperation(value = "解绑围栏中的终端", notes = "必须参数：serverId、fenceId、terminalIds")
     @PostMapping("unbind")
     public R<String> unbindTerminalFence(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());
@@ -164,6 +178,7 @@ public class FenceController extends BaseController<FenceService> {
     /**
      * 分页查询围栏列表
      */
+    @ApiOperation(value = "查询围栏列表", notes = "查询围栏列表")
     @GetMapping("list")
     public R<PageResult<TraceFence>> queryFenceList(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());
@@ -173,6 +188,7 @@ public class FenceController extends BaseController<FenceService> {
     /**
      * 分页查询围栏中的终端列表
      */
+    @ApiOperation(value = "查询围栏中的终端列表", notes = "必须参数：serverId、fenceId")
     @GetMapping("terminal")
     public R<PageResult<TraceTerminal>> queryTerminalFenceList(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());
@@ -182,6 +198,7 @@ public class FenceController extends BaseController<FenceService> {
     /**
      * 根据围栏id查询围栏信息
      */
+    @ApiOperation(value = "查询围栏信息", notes = "必须参数：serverId、fenceId")
     @GetMapping
     public R<TraceFence> queryByFenceId(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());
@@ -191,6 +208,7 @@ public class FenceController extends BaseController<FenceService> {
     /**
      * 查询终端在围栏中的状态，是否超出围栏
      */
+    @ApiOperation(value = "查询终端在围栏中的状态", notes = "查询终端在围栏中的状态，是否超出围栏，必须参数：serverId、fenceId、TerminalId")
     @GetMapping("status")
     public R<Boolean> queryTerminalStatus(@RequestBody FenceParam fenceParam) {
         FenceService fenceService = super.chooseService(fenceParam.getProvider());

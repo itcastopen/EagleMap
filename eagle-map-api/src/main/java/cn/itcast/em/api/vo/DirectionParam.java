@@ -9,7 +9,7 @@ import java.util.Map;
 
 @Data
 public class DirectionParam {
-    @ApiModelProperty(value = "服务提供商，必须大写", required = true, example = "NONE")
+    @ApiModelProperty(value = "服务提供商，必须大写，默认为：高德地图", example = "NONE")
     private ServerType provider = ServerType.NONE;
     @ApiModelProperty(value = "起点坐标", required = true)
     private CoordinateVo origin;

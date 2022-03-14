@@ -2,6 +2,7 @@ package cn.itcast.em.vo;
 
 import cn.hutool.core.convert.Convert;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,10 +17,15 @@ import java.util.List;
 @Builder
 public class PageResult<T> {
 
-    private Integer total = 0;//总记录数
-    private Integer pageSize = 0;//页大小
-    private Integer pageCount = 0;//总页数
-    private Integer page = 0;//当前页码
+    @ApiModelProperty(value = "总记录数", required = true)
+    private Integer total = 0;
+    @ApiModelProperty(value = "页面大小", required = true)
+    private Integer pageSize = 0;
+    @ApiModelProperty(value = "总页数", required = true)
+    private Integer pageCount = 0;
+    @ApiModelProperty(value = "当前页码", required = true)
+    private Integer page = 0;
+    @ApiModelProperty(value = "数据列表", required = true)
     private List<T> items = Collections.emptyList(); //列表
 
     /**

@@ -20,17 +20,3 @@ offline_user.md
 *.iws
 *.iml
 *.ipr
-
-### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
-generatorConfig.xml
-
-### nacos ###
-third-party/nacos/derby.log
-third-party/nacos/data/
-third-party/nacos/work/

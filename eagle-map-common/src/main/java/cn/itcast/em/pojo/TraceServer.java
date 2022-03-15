@@ -22,7 +22,7 @@ public class TraceServer extends BasePojo {
 
     private ServerType provider; //地图服务商
     private Long serverId; //地图服务商中的服务id
-    private String name; //此段轨迹的里程数，单位：米
+    private String name; //服务名称
     @TableField("`desc`")
     private String desc; //服务描述
     private Boolean status; //服务描述

@@ -69,7 +69,9 @@ public class BaiduTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, 
 
     @Override
     public List<TraceServer> queryAll() {
-        return super.list();
+        LambdaQueryWrapper<TraceServer> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(TraceServer::getProvider, ServerType.BAIDU);
+        return super.list(lambdaQueryWrapper);
     }
 
     @Override

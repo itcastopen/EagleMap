@@ -9,6 +9,7 @@ import cn.hutool.json.JSONUtil;
 import cn.itcast.em.config.AMapServerConfig;
 import cn.itcast.em.config.BaiduServerConfig;
 import cn.itcast.em.config.EagleConfig;
+import cn.itcast.em.enums.CoordinateType;
 import cn.itcast.em.enums.ServerType;
 import cn.itcast.em.mapper.TraceTerminalMapper;
 import cn.itcast.em.pojo.TraceServer;
@@ -140,7 +141,7 @@ public class BaiduTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMapp
         //封装请求参数
         Map<String, Object> requestParam = new HashMap<>();
         requestParam.put("service_id", traceTerminal.getServerId());
-        requestParam.put("entity_name", traceTerminalData.getName());
+        requestParam.put("entity_name", traceTerminal.getName());
         requestParam.put("entity_desc", traceTerminal.getDesc());
         if (StrUtil.isNotEmpty(traceTerminal.getProps())) {
             JSONObject jsonObject = JSONUtil.parseObj(traceTerminal.getProps());
@@ -196,6 +197,28 @@ public class BaiduTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMapp
 
         Page<TraceTerminal> terminalPage = super.page(traceTerminalPage, queryWrapper);
         return pageResult.convert(terminalPage);
+    }
+
+    @Override
+    public String queryLastPoint(Long serverId, Long terminalId, Long traceId) {
+        //查询终端数据
+        TraceTerminal traceTerminalData = super.getById(terminalId);
+
+        String url = this.eagleConfig.getBaiduYingYanApi() + "/api/v3/entity/list";
+        //封装请求参数
+        Map<String, Object> requestParam = new HashMap<>();
+        requestParam.put("service_id", serverId);
+        requestParam.put("filter", "entity_names:" + traceTerminalData.getName());
+        requestParam.put("coord_type_output", CoordinateType.EAGLE.getValue());
+
+        return this.baiduWebApiService.doGet(url, requestParam, response -> {
+            String body = response.body();
+            JSONObject json = JSONUtil.parseObj(body);
+            if (!response.isOk() || json.getInt("status") != 0) {
+                return body;
+            }
+            return json.getJSONArray("entities").toString();
+        });
     }
 
     @Override

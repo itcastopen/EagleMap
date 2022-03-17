@@ -16,6 +16,7 @@ import cn.itcast.em.pojo.TraceTerminal;
 import cn.itcast.em.service.EagleOrdered;
 import cn.itcast.em.service.TraceServerService;
 import cn.itcast.em.service.TraceTerminalService;
+import cn.itcast.em.vo.CoordinateVo;
 import cn.itcast.em.vo.PageResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -207,6 +208,24 @@ public class AMapTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMappe
 
             return pageResult;
 
+        });
+    }
+
+    @Override
+    public String queryLastPoint(Long serverId, Long terminalId, Long traceId) {
+        String url = this.eagleConfig.getAmapTsApi() + "/v1/track/terminal/lastpoint";
+        //封装请求参数
+        Map<String, Object> requestParam = new HashMap<>();
+        requestParam.put("sid", serverId);
+        requestParam.put("tid", terminalId);
+        requestParam.put("trid", traceId);
+        return this.aMapWebApiService.doGet(url, requestParam, response -> {
+            String body = response.body();
+            JSONObject json = JSONUtil.parseObj(body);
+            if (!response.isOk() || json.getInt("errcode") != 10000) {
+                return body;
+            }
+            return Convert.toStr(json.getJSONObject("data"));
         });
     }
 

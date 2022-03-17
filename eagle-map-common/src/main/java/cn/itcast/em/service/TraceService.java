@@ -50,7 +50,7 @@ public interface TraceService extends EagleMapService {
      * @param serverId   服务id
      * @param terminalId 终端id
      * @param traceId    轨迹id
-     * @param param      其他的请求参数
+     * @param param      其他的请求参数，用于查询轨迹详情的参数
      * @return
      */
     String stopTrace(Long serverId, Long terminalId, Long traceId, Map<String, Object> param);
@@ -72,7 +72,7 @@ public interface TraceService extends EagleMapService {
      * @param serverId   服务id
      * @param terminalId 终端id
      * @param traceId    轨迹id
-     * @param param      其他的请求参数
+     * @param param      其他的请求参数，用于查询轨迹详情的参数
      * @return
      */
     Trace queryTraceInfo(Long serverId, Long terminalId, Long traceId, Map<String, Object> param);

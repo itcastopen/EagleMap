@@ -2,6 +2,7 @@ package cn.itcast.em.service;
 
 import cn.itcast.em.pojo.TraceTerminal;
 import cn.itcast.em.service.EagleMapService;
+import cn.itcast.em.vo.CoordinateVo;
 import cn.itcast.em.vo.PageResult;
 
 import java.util.List;
@@ -61,5 +62,15 @@ public interface TraceTerminalService extends EagleMapService {
      * @return
      */
     PageResult<TraceTerminal> queryList(Long serverId, Long terminalId, String name, Integer page, Integer pageSize);
+
+    /**
+     * 查询终端在某个轨迹中的最新位置
+     *
+     * @param serverId   服务id
+     * @param terminalId 终端id
+     * @param traceId    轨迹id
+     * @return 服务商响应的数据
+     */
+    String queryLastPoint(Long serverId, Long terminalId, Long traceId);
 
 }

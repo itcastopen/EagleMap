@@ -109,4 +109,23 @@ public class TraceTerminalController extends BaseController<TraceTerminalService
         PageResult<TraceTerminal> pageResult = traceTerminalService.queryList(serverId, terminalId, name, page, pageSize);
         return R.success(pageResult);
     }
+
+    /**
+     * 查询终端在某个轨迹中的最新位置
+     */
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "provider", value = "服务提供商，必须大写，如：BAIDU,AMAP,NONE，默认：高德地图", required = true),
+            @ApiImplicitParam(name = "serverId", value = "服务id"),
+            @ApiImplicitParam(name = "terminalId", value = "终端id"),
+            @ApiImplicitParam(name = "traceId", value = "轨迹id")})
+    @ApiOperation(value = "查询终端在某个轨迹中的最新位置", notes = "查询终端在某个轨迹中的最新位置")
+    @GetMapping("last/point")
+    public R<String> queryLastPoint(@RequestParam(value = "provider", defaultValue = "NONE") ServerType provider,
+                                    @RequestParam(value = "serverId") Long serverId,
+                                    @RequestParam(value = "terminalId") Long terminalId,
+                                    @RequestParam(value = "traceId") Long traceId) {
+        TraceTerminalService traceTerminalService = super.chooseService(provider);
+        String result = traceTerminalService.queryLastPoint(serverId, terminalId, traceId);
+        return R.success(result);
+    }
 }

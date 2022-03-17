@@ -2,12 +2,15 @@ package cn.itcast.em.api.controller;
 
 import cn.itcast.em.api.vo.FenceParam;
 import cn.itcast.em.enums.FenceType;
+import cn.itcast.em.enums.ServerType;
 import cn.itcast.em.pojo.TraceFence;
 import cn.itcast.em.pojo.TraceTerminal;
 import cn.itcast.em.service.FenceService;
 import cn.itcast.em.vo.PageResult;
 import cn.itcast.em.vo.R;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -178,41 +181,71 @@ public class FenceController extends BaseController<FenceService> {
     /**
      * 分页查询围栏列表
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "provider", value = "服务提供商，必须大写，如：BAIDU,AMAP,NONE，默认：高德地图", required = true),
+            @ApiImplicitParam(name = "page", value = "页数，默认：1"),
+            @ApiImplicitParam(name = "pageSize", value = "页面大小，默认：20")})
     @ApiOperation(value = "查询围栏列表", notes = "查询围栏列表")
     @GetMapping("list")
-    public R<PageResult<TraceFence>> queryFenceList(@RequestBody FenceParam fenceParam) {
-        FenceService fenceService = super.chooseService(fenceParam.getProvider());
-        return fenceService.queryFenceList(fenceParam.getPage(), fenceParam.getPageSize());
+    public R<PageResult<TraceFence>> queryFenceList(@RequestParam(value = "provider", defaultValue = "NONE") ServerType provider,
+                                                    @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                                    @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
+        FenceService fenceService = super.chooseService(provider);
+        return fenceService.queryFenceList(page, pageSize);
     }
 
     /**
      * 分页查询围栏中的终端列表
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "provider", value = "服务提供商，必须大写，如：BAIDU,AMAP,NONE，默认：高德地图", required = true),
+            @ApiImplicitParam(name = "serverId", value = "服务id", required = true),
+            @ApiImplicitParam(name = "fenceId", value = "围栏id", required = true),
+            @ApiImplicitParam(name = "page", value = "页数，默认：1"),
+            @ApiImplicitParam(name = "pageSize", value = "页面大小，默认：20")})
     @ApiOperation(value = "查询围栏中的终端列表", notes = "必须参数：serverId、fenceId")
     @GetMapping("terminal")
-    public R<PageResult<TraceTerminal>> queryTerminalFenceList(@RequestBody FenceParam fenceParam) {
-        FenceService fenceService = super.chooseService(fenceParam.getProvider());
-        return fenceService.queryTerminalFenceList(fenceParam.getServerId(), fenceParam.getFenceId(), fenceParam.getPage(), fenceParam.getPageSize());
+    public R<PageResult<TraceTerminal>> queryTerminalFenceList(@RequestParam(value = "provider", defaultValue = "NONE") ServerType provider,
+                                                               @RequestParam(value = "serverId") Long serverId,
+                                                               @RequestParam(value = "fenceId") Long fenceId,
+                                                               @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                                               @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
+        FenceService fenceService = super.chooseService(provider);
+        return fenceService.queryTerminalFenceList(serverId, fenceId, page, pageSize);
     }
 
     /**
      * 根据围栏id查询围栏信息
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "provider", value = "服务提供商，必须大写，如：BAIDU,AMAP,NONE，默认：高德地图", required = true),
+            @ApiImplicitParam(name = "serverId", value = "服务id", required = true),
+            @ApiImplicitParam(name = "fenceId", value = "围栏id", required = true)})
     @ApiOperation(value = "查询围栏信息", notes = "必须参数：serverId、fenceId")
     @GetMapping
-    public R<TraceFence> queryByFenceId(@RequestBody FenceParam fenceParam) {
-        FenceService fenceService = super.chooseService(fenceParam.getProvider());
-        return fenceService.queryByFenceId(fenceParam.getServerId(), fenceParam.getFenceId());
+    public R<TraceFence> queryByFenceId(@RequestParam(value = "provider", defaultValue = "NONE") ServerType provider,
+                                        @RequestParam(value = "serverId") Long serverId,
+                                        @RequestParam(value = "fenceId") Long fenceId) {
+        FenceService fenceService = super.chooseService(provider);
+        return fenceService.queryByFenceId(serverId, fenceId);
     }
 
     /**
      * 查询终端在围栏中的状态，是否超出围栏
      */
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "provider", value = "服务提供商，必须大写，如：BAIDU,AMAP,NONE，默认：高德地图", required = true),
+            @ApiImplicitParam(name = "serverId", value = "服务id", required = true),
+            @ApiImplicitParam(name = "fenceId", value = "围栏id", required = true),
+            @ApiImplicitParam(name = "terminalId", value = "终端id", required = true)})
     @ApiOperation(value = "查询终端在围栏中的状态", notes = "查询终端在围栏中的状态，是否超出围栏，必须参数：serverId、fenceId、TerminalId")
     @GetMapping("status")
-    public R<Boolean> queryTerminalStatus(@RequestBody FenceParam fenceParam) {
-        FenceService fenceService = super.chooseService(fenceParam.getProvider());
-        return fenceService.queryTerminalStatus(fenceParam.getServerId(), fenceParam.getFenceId(), fenceParam.getTerminalId());
+    public R<Boolean> queryTerminalStatus(@RequestParam(value = "provider", defaultValue = "NONE") ServerType provider,
+                                          @RequestParam(value = "serverId") Long serverId,
+                                          @RequestParam(value = "fenceId") Long fenceId,
+                                          @RequestParam(value = "terminalId") Long terminalId) {
+        FenceService fenceService = super.chooseService(provider);
+        return fenceService.queryTerminalStatus(serverId, fenceId, terminalId);
     }
 
 }

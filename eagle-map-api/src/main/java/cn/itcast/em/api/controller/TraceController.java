@@ -175,6 +175,7 @@ public class TraceController extends BaseController<TraceService> {
         try {
             //绘制图
             BufferedImage bufferedImage = this.traceImageService.drawImage(points, width, height);
+            response.addHeader("status", "1");
             ImageIO.write(bufferedImage, "jpg", response.getOutputStream());
         } catch (IOException e) {
             log.error("生成图片出错！serverId = {}, terminalId = {}, traceId = {}, param = {}", serverId, terminalId, traceId, param, e);

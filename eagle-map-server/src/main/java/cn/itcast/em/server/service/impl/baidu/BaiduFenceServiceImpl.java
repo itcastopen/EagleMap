@@ -420,6 +420,19 @@ public class BaiduFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFe
     }
 
     @Override
+    public R<List<TraceFence>> searchTraceFenceList(Long fenceId, String fenceName) {
+        LambdaQueryWrapper<TraceFence> queryWrapper = new LambdaQueryWrapper<>();
+        if (null != fenceId) {
+            queryWrapper.eq(TraceFence::getFenceId, fenceId);
+        }
+        if (StrUtil.isNotEmpty(fenceName)) {
+            queryWrapper.like(TraceFence::getName, fenceName);
+        }
+        queryWrapper.eq(TraceFence::getProvider, ServerType.BAIDU);
+        return R.success(super.list(queryWrapper));
+    }
+
+    @Override
     public int getOrder() {
         return EagleOrdered.TWO;
     }

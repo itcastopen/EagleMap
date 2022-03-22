@@ -123,7 +123,7 @@ public class TraceTerminalController extends BaseController<TraceTerminalService
     public R<String> queryLastPoint(@RequestParam(value = "provider", defaultValue = "NONE") ServerType provider,
                                     @RequestParam(value = "serverId") Long serverId,
                                     @RequestParam(value = "terminalId") Long terminalId,
-                                    @RequestParam(value = "traceId") Long traceId) {
+                                    @RequestParam(value = "traceId", required = false) Long traceId) {
         TraceTerminalService traceTerminalService = super.chooseService(provider);
         String result = traceTerminalService.queryLastPoint(serverId, terminalId, traceId);
         return R.success(result);

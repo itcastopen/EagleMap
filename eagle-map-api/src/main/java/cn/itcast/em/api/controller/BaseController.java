@@ -5,6 +5,7 @@ import cn.itcast.em.annotations.EagleAutowired;
 import cn.itcast.em.enums.ServerType;
 import cn.itcast.em.service.EagleMapService;
 
+import javax.xml.stream.events.Characters;
 import java.lang.reflect.ParameterizedType;
 
 
@@ -77,5 +78,4 @@ public abstract class BaseController<T extends EagleMapService> {
         String name = serviceNamePrefix + clazz.getSimpleName();
         return (T) SpringUtil.getApplicationContext().getBean(name, clazz);
     }
-
 }

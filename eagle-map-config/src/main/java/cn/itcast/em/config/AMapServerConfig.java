@@ -21,6 +21,7 @@ public class AMapServerConfig {
     private MapServerConfig server;
     private MapServerConfig browser;
     private Boolean enable;
+    private String name;
 
     @PostConstruct
     public void check() {

@@ -9,6 +9,7 @@
         <module>eagle-map-api</module>
         <module>eagle-map-server</module>
         <module>eagle-map-config</module>
+        <module>eagle-map-admin</module>
     </modules>
 
     <parent>
@@ -107,6 +108,22 @@
                     <target>8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.1.0.RELEASE</version>
+                <configuration>
+                    <mainClass>cn.itcast.em.server.EagleMapApplication</mainClass>
+                    <outputDirectory>./target</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

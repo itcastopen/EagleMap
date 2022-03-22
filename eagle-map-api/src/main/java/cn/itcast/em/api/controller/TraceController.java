@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -220,6 +221,18 @@ public class TraceController extends BaseController<TraceService> {
                                                    @RequestParam(value = "provider", defaultValue = "NONE") String provider) {
         TraceService traceService = super.chooseService(ServerType.valueOf(provider));
         return R.success(traceService.queryTracePageList(page, pageSize));
+    }
+
+    /**
+     * 根据轨迹id 或 轨迹名称搜索轨迹
+     */
+    @ApiOperation(value = "查询轨迹列表", notes = "分页查询轨迹列表，按照轨迹创建时间倒序排序。")
+    @GetMapping("search")
+    public R<List<Trace>> searchTraceList(@RequestParam(value = "provider", defaultValue = "NONE") String provider,
+                                          @RequestParam(value = "traceId", required = false) Long traceId,
+                                          @RequestParam(value = "traceName", required = false) String traceName) {
+        TraceService traceService = super.chooseService(ServerType.valueOf(provider));
+        return R.success(traceService.searchTraceList(traceId, traceName));
     }
 
 

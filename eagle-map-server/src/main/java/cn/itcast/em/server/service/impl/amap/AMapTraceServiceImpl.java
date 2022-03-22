@@ -5,6 +5,7 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -180,6 +181,21 @@ public class AMapTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> implem
         super.page(pageInfo, queryWrapper);
 
         return new PageResult().convert(pageInfo);
+    }
+
+    @Override
+    public List<Trace> searchTraceList(Long traceId, String traceName) {
+        LambdaQueryWrapper<Trace> queryWrapper = new LambdaQueryWrapper<>();
+        if (null != traceId) {
+            queryWrapper.eq(Trace::getTraceId, traceId);
+        }
+        if (StrUtil.isNotEmpty(traceName)) {
+            queryWrapper.like(Trace::getName, traceName);
+        }
+
+        queryWrapper.eq(Trace::getProvider, ServerType.AMAP);
+
+        return super.list(queryWrapper);
     }
 
     /**

@@ -66,6 +66,15 @@ public interface TraceService extends EagleMapService {
     PageResult<Trace> queryTracePageList(Integer page, Integer pageSize);
 
     /**
+     * 分页查询轨迹列表，按照轨迹创建时间倒序排序
+     *
+     * @param traceId   轨迹id
+     * @param traceName 轨迹名称
+     * @return
+     */
+    List<Trace> searchTraceList(Long traceId, String traceName);
+
+    /**
      * 查询轨迹详情，优先查询本地数据库，如本地库中没有数据，再查询地图服务商
      * 可以通过param参数中的local参数进行控制，默认为true，如果不希望查询本地库，就将其设置为false
      *

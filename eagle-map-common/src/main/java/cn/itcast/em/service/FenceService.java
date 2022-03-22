@@ -6,6 +6,7 @@ import cn.itcast.em.pojo.TraceTerminal;
 import cn.itcast.em.vo.PageResult;
 import cn.itcast.em.vo.R;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -107,4 +108,13 @@ public interface FenceService extends EagleMapService {
      * @return 是否在围栏中
      */
     R<Boolean> queryTerminalStatus(Long serverId, Long fenceId, Long terminalId);
+
+    /**
+     * 根据围栏id 或 围栏名称搜索围栏列表
+     *
+     * @param fenceId   围栏id
+     * @param fenceName 围栏名称
+     * @return 围栏列表
+     */
+    R<List<TraceFence>> searchTraceFenceList(Long fenceId, String fenceName);
 }

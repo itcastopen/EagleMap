@@ -146,6 +146,17 @@ public class AMapTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, T
                 traceServer.setName(obj.getStr("name"));
                 traceServer.setDesc(obj.getStr("desc"));
                 traceServer.setProvider(ServerType.AMAP);
+
+                //查询数据库补全字段
+                LambdaQueryWrapper<TraceServer> queryWrapper = new LambdaQueryWrapper<>();
+                queryWrapper.eq(TraceServer::getServerId, traceServer.getServerId());
+                queryWrapper.eq(TraceServer::getProvider, ServerType.AMAP);
+                TraceServer traceServerData = super.getOne(queryWrapper);
+
+                traceServer.setStatus(traceServerData.getStatus());
+                traceServer.setCreated(traceServerData.getCreated());
+                traceServer.setUpdated(traceServerData.getUpdated());
+
                 return traceServer;
             }).collect(Collectors.toList());
         });

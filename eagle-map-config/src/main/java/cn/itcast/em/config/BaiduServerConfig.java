@@ -22,6 +22,7 @@ public class BaiduServerConfig {
     private MapServerConfig browser;
     private List<TraceServerConfig> traceServers = Collections.emptyList();
     private Boolean enable;
+    private String name;
 
     @PostConstruct
     public void check() {

@@ -14,6 +14,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.stream.events.Characters;
+import java.util.List;
+
 /**
  * 电子围栏相关页面
  *
@@ -248,4 +251,18 @@ public class FenceController extends BaseController<FenceService> {
         return fenceService.queryTerminalStatus(serverId, fenceId, terminalId);
     }
 
+    /**
+     * 根据围栏id 或 围栏名称搜索围栏列表
+     *
+     * @param provider  服务商
+     * @param fenceId   围栏id
+     * @param fenceName 围栏名称
+     * @return 围栏列表
+     */
+    public R<List<TraceFence>> searchTraceFenceList(@RequestParam(value = "provider", defaultValue = "NONE") ServerType provider,
+                                                    @RequestParam(value = "fenceId", required = false) Long fenceId,
+                                                    @RequestParam(value = "fenceName", required = false) String fenceName) {
+        FenceService fenceService = super.chooseService(provider);
+        return fenceService.searchTraceFenceList(fenceId, fenceName);
+    }
 }

@@ -15,4 +15,8 @@ public class EagleConfig {
     private String amapWebApi;
     private String amapTsApi;
     private TraceImageConfig traceImage;
+    private AdminConfig admin;
+    private AMapServerConfig amap;
+    private BaiduServerConfig baidu;
+
 }

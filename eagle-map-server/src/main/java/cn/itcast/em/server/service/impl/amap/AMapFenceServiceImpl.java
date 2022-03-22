@@ -2,6 +2,7 @@ package cn.itcast.em.server.service.impl.amap;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -414,6 +415,19 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
             JSONObject result = (JSONObject) results.get(0);
             return R.success(result.getInt("in") == 1);
         });
+    }
+
+    @Override
+    public R<List<TraceFence>> searchTraceFenceList(Long fenceId, String fenceName) {
+        LambdaQueryWrapper<TraceFence> queryWrapper = new LambdaQueryWrapper<>();
+        if (null != fenceId) {
+            queryWrapper.eq(TraceFence::getFenceId, fenceId);
+        }
+        if (StrUtil.isNotEmpty(fenceName)) {
+            queryWrapper.like(TraceFence::getName, fenceName);
+        }
+        queryWrapper.eq(TraceFence::getProvider, ServerType.AMAP);
+        return R.success(super.list(queryWrapper));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package cn.itcast.em.admin.controller;
 
+import cn.itcast.em.admin.annotation.NoAuthorization;
 import cn.itcast.em.admin.vo.SystemConfig;
 import cn.itcast.em.config.AMapServerConfig;
 import cn.itcast.em.config.BaiduServerConfig;
@@ -9,6 +10,7 @@ import cn.itcast.em.vo.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -58,5 +60,28 @@ public class SystemController {
 
         return R.success(result);
     }
+
+    /**
+     * 查询ak
+     *
+     * @param provider
+     * @return
+     */
+    @GetMapping("ak")
+    @NoAuthorization
+    public R<String> querySystemConfig(@RequestParam("provider") ServerType provider) {
+        switch (provider) {
+            case BAIDU: {
+                return R.success(this.eagleConfig.getBaidu().getBrowser().getAk());
+            }
+            case AMAP: {
+                return R.success(this.eagleConfig.getAmap().getBrowser().getAk());
+            }
+            default: {
+                return R.success("");
+            }
+        }
+    }
+
 
 }

@@ -5,7 +5,6 @@ import cn.itcast.em.annotations.EagleAutowired;
 import cn.itcast.em.enums.ServerType;
 import cn.itcast.em.service.EagleMapService;
 
-import javax.xml.stream.events.Characters;
 import java.lang.reflect.ParameterizedType;
 
 
@@ -21,51 +20,25 @@ public abstract class BaseController<T extends EagleMapService> {
      * @return
      */
     public T chooseService(ServerType serverType) {
-        T t;
         switch (serverType) {
             case AMAP: {
-                t = this.aMapService();
-                break;
+                return this.getService(ServerType.AMAP.getDesc());
             }
             case BAIDU: {
-                t = this.baiduService();
-                break;
+                return this.getService(ServerType.BAIDU.getDesc());
             }
             default: {
-                t = this.defaultService();
-                break;
+                return this.t;
             }
         }
-        return t;
     }
 
     /**
-     * 默认实现
+     * 根据bean名称的前缀查找bean
      *
+     * @param serviceNamePrefix 前缀，约定：百度->
      * @return
      */
-    public T defaultService() {
-        return this.t;
-    }
-
-    /**
-     * 百度实现
-     *
-     * @return
-     */
-    public T baiduService() {
-        return this.getService("Baidu");
-    }
-
-    /**
-     * 高德实现
-     *
-     * @return
-     */
-    public T aMapService() {
-        return this.getService("AMap");
-    }
-
     private T getService(String serviceNamePrefix) {
         //获取到泛型的类型
         String className = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
@@ -75,6 +48,7 @@ public abstract class BaseController<T extends EagleMapService> {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+        //bean的名称规则：前缀+接口名称
         String name = serviceNamePrefix + clazz.getSimpleName();
         return (T) SpringUtil.getApplicationContext().getBean(name, clazz);
     }

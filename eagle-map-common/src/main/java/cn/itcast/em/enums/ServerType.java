@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public enum ServerType {
 
-    BAIDU(1, "baidu"), AMAP(2, "amap"), NONE(999, "none");
+    BAIDU(1, "Baidu"), AMAP(2, "AMap"), NONE(999, "none");
 
     @EnumValue
     private int value;

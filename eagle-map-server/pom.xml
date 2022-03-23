@@ -64,7 +64,7 @@
                 <version>2.1.0.RELEASE</version>
                 <configuration>
                     <mainClass>cn.itcast.em.server.EagleMapApplication</mainClass>
-                    <outputDirectory>F:\\publish</outputDirectory>
+                    <outputDirectory>./target</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>

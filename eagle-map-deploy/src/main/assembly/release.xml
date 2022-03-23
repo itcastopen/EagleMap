@@ -1,0 +1,47 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+    <id>EagleMap</id>
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <fileSets>
+        <!-- 程序运行的jar包 -->
+        <fileSet>
+            <directory>../eagle-map-server/target/</directory>
+            <outputDirectory>target</outputDirectory>
+            <includes>
+                <include>**/*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode><!--文件执行权限-->
+        </fileSet>
+        <!-- 程序运行的启动脚本 -->
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>bin</outputDirectory>   <!-- 打包的文件解压后放在该目录下 -->
+            <includes>
+                <include>*</include>
+            </includes>
+            <fileMode>0755</fileMode>   <!--文件执行权限-->
+        </fileSet>
+        <!--日志-->
+        <fileSet>
+            <outputDirectory>logs</outputDirectory> <!--创建空目录-->
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+        </fileSet>
+        <fileSet>
+            <!-- 配置文件，这里只导入 application-eagle.yml 即可-->
+            <directory>../eagle-map-server/target/classes</directory>
+            <outputDirectory>conf</outputDirectory>
+            <includes>
+                <include>application-eagle.yml</include>
+            </includes>
+            <fileMode>0755</fileMode>
+        </fileSet>
+    </fileSets>
+</assembly>

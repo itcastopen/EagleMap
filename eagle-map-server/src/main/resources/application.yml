@@ -2,7 +2,7 @@ server:
   port: 8484
 spring:
   profiles:
-    active: eagle-test
+    active: eagle
   aop:
     proxy-target-class: true
 application:

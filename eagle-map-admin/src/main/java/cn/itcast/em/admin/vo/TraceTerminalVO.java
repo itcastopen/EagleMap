@@ -1,6 +1,6 @@
 package cn.itcast.em.admin.vo;
 
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import lombok.Data;
 
 import java.util.Date;
@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 public class TraceTerminalVO {
 
-    private ServerType provider; //地图服务商
+    private ProviderType provider; //地图服务商
     private Long serverId; //服务id
     private Long terminalId; //终端
     private String name; //终端名称

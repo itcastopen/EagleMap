@@ -1,6 +1,6 @@
 package cn.itcast.em.api.vo;
 
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.vo.CoordinateVo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.util.Map;
 public class StaticMapParam {
 
     @ApiModelProperty(value = "服务提供商，必须大写，默认为：高德地图", example = "NONE")
-    private ServerType provider = ServerType.NONE;
+    private ProviderType provider = ProviderType.NONE;
     @ApiModelProperty(value = "位置坐标", required = true)
     private CoordinateVo location;
     @ApiModelProperty(value = "图片的宽度，默认：750", example = "750")

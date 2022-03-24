@@ -6,6 +6,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.itcast.em.config.AMapServerConfig;
 import cn.itcast.em.config.EagleConfig;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.service.DirectionService;
 import cn.itcast.em.service.EagleOrdered;
 import cn.itcast.em.vo.CoordinateVo;
@@ -119,5 +120,10 @@ public class AMapDirectionServiceImpl implements DirectionService {
 
             return body;
         });
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.AMAP;
     }
 }

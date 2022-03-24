@@ -9,11 +9,10 @@ import cn.hutool.json.JSONUtil;
 import cn.itcast.em.config.AMapServerConfig;
 import cn.itcast.em.config.EagleConfig;
 import cn.itcast.em.enums.FenceType;
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.exception.EagleMapException;
 import cn.itcast.em.mapper.TraceFenceMapper;
 import cn.itcast.em.mapper.TraceTerminalMapper;
-import cn.itcast.em.pojo.Trace;
 import cn.itcast.em.pojo.TraceFence;
 import cn.itcast.em.pojo.TraceTerminal;
 import cn.itcast.em.service.EagleOrdered;
@@ -113,7 +112,7 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
             traceFence.setServerId(serverId);
             traceFence.setName(name);
             traceFence.setDesc(desc);
-            traceFence.setProvider(ServerType.AMAP);
+            traceFence.setProvider(ProviderType.AMAP);
             traceFence.setParam(JSONUtil.toJsonStr(param));
             traceFence.setType(fenceType);
             super.save(traceFence);
@@ -186,7 +185,7 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
 
             LambdaQueryWrapper<TraceFence> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(TraceFence::getFenceId, fenceId);
-            queryWrapper.eq(TraceFence::getProvider, ServerType.AMAP);
+            queryWrapper.eq(TraceFence::getProvider, ProviderType.AMAP);
             queryWrapper.eq(TraceFence::getServerId, serverId);
             super.update(traceFence, queryWrapper);
 
@@ -223,7 +222,7 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
             //删除数据库中的围栏数据
             LambdaQueryWrapper<TraceFence> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.in(TraceFence::getFenceId, fenceIds);
-            queryWrapper.eq(TraceFence::getProvider, ServerType.AMAP);
+            queryWrapper.eq(TraceFence::getProvider, ProviderType.AMAP);
             queryWrapper.eq(TraceFence::getServerId, serverId);
             super.remove(queryWrapper);
 
@@ -332,7 +331,7 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
 
                 //查询终端列表
                 LambdaQueryWrapper<TraceTerminal> queryWrapper = new LambdaQueryWrapper<>();
-                queryWrapper.eq(TraceTerminal::getProvider, ServerType.AMAP);
+                queryWrapper.eq(TraceTerminal::getProvider, ProviderType.AMAP);
                 queryWrapper.eq(TraceTerminal::getServerId, serverId);
                 queryWrapper.in(TraceTerminal::getTerminalId, terminalIdList);
                 return this.traceTerminalMapper.selectList(queryWrapper);
@@ -358,7 +357,7 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
     public R<PageResult<TraceFence>> queryFenceList(Integer page, Integer pageSize) {
         Page<TraceFence> traceFencePage = new Page<>(page, pageSize);
         LambdaQueryWrapper<TraceFence> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(TraceFence::getProvider, ServerType.AMAP);
+        queryWrapper.eq(TraceFence::getProvider, ProviderType.AMAP);
         queryWrapper.orderByDesc(TraceFence::getCreated);
         super.page(traceFencePage, queryWrapper);
         return R.success(new PageResult<TraceFence>().convert(traceFencePage));
@@ -374,7 +373,7 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
     @Override
     public R<TraceFence> queryByFenceId(Long serverId, Long fenceId) {
         LambdaQueryWrapper<TraceFence> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(TraceFence::getProvider, ServerType.AMAP);
+        queryWrapper.eq(TraceFence::getProvider, ProviderType.AMAP);
         queryWrapper.eq(TraceFence::getFenceId, fenceId);
         queryWrapper.eq(TraceFence::getServerId, serverId);
         TraceFence traceFence = super.getOne(queryWrapper);
@@ -426,12 +425,17 @@ public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFen
         if (StrUtil.isNotEmpty(fenceName)) {
             queryWrapper.like(TraceFence::getName, fenceName);
         }
-        queryWrapper.eq(TraceFence::getProvider, ServerType.AMAP);
+        queryWrapper.eq(TraceFence::getProvider, ProviderType.AMAP);
         return R.success(super.list(queryWrapper));
     }
 
     @Override
     public int getOrder() {
         return EagleOrdered.ONE;
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.AMAP;
     }
 }

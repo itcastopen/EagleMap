@@ -11,7 +11,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.itcast.em.config.AMapServerConfig;
 import cn.itcast.em.config.EagleConfig;
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.mapper.TraceMapper;
 import cn.itcast.em.pojo.Trace;
 import cn.itcast.em.service.EagleOrdered;
@@ -68,7 +68,7 @@ public class AMapTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> implem
 
             //将服务数据存储到数据库
             Trace trace = new Trace();
-            trace.setProvider(ServerType.AMAP);
+            trace.setProvider(ProviderType.AMAP);
             trace.setServerId(serverId);
             trace.setName(name);
             trace.setTerminalId(terminalId);
@@ -102,7 +102,7 @@ public class AMapTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> implem
             lambdaQueryWrapper.eq(Trace::getServerId, serverId);
             lambdaQueryWrapper.eq(Trace::getTerminalId, terminalId);
             lambdaQueryWrapper.eq(Trace::getTraceId, traceId);
-            lambdaQueryWrapper.eq(Trace::getProvider, ServerType.AMAP);
+            lambdaQueryWrapper.eq(Trace::getProvider, ProviderType.AMAP);
             super.remove(lambdaQueryWrapper);
 
             return "ok";
@@ -146,7 +146,7 @@ public class AMapTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> implem
         lambdaQueryWrapper.eq(Trace::getServerId, serverId);
         lambdaQueryWrapper.eq(Trace::getTerminalId, terminalId);
         lambdaQueryWrapper.eq(Trace::getTraceId, traceId);
-        lambdaQueryWrapper.eq(Trace::getProvider, ServerType.AMAP);
+        lambdaQueryWrapper.eq(Trace::getProvider, ProviderType.AMAP);
 
         Trace trace = super.getOne(lambdaQueryWrapper);
         if (null == trace) {
@@ -193,7 +193,7 @@ public class AMapTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> implem
             queryWrapper.like(Trace::getName, traceName);
         }
 
-        queryWrapper.eq(Trace::getProvider, ServerType.AMAP);
+        queryWrapper.eq(Trace::getProvider, ProviderType.AMAP);
 
         return super.list(queryWrapper);
     }
@@ -215,7 +215,7 @@ public class AMapTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> implem
         lambdaQueryWrapper.eq(Trace::getServerId, serverId);
         lambdaQueryWrapper.eq(Trace::getTerminalId, terminalId);
         lambdaQueryWrapper.eq(Trace::getTraceId, traceId);
-        lambdaQueryWrapper.eq(Trace::getProvider, ServerType.AMAP);
+        lambdaQueryWrapper.eq(Trace::getProvider, ProviderType.AMAP);
         Trace trace = super.getOne(lambdaQueryWrapper);
         if (null == trace) {
             return null;
@@ -308,5 +308,10 @@ public class AMapTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> implem
     @Override
     public int getOrder() {
         return EagleOrdered.ONE;
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.AMAP;
     }
 }

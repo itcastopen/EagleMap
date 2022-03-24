@@ -1,10 +1,8 @@
 package cn.itcast.em.admin.vo;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.convert.Convert;
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.pojo.TraceServer;
-import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.util.Date;
@@ -18,7 +16,7 @@ import java.util.Date;
 public class TraceServerVO {
 
     private Long id; //地图服务商中的服务id
-    private ServerType provider; //地图服务商
+    private ProviderType provider; //地图服务商
     private String name; //服务名称
     private String desc; //服务描述
     private Boolean status; //服务描述

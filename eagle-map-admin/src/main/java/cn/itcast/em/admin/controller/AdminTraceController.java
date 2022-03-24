@@ -14,7 +14,7 @@ import cn.itcast.em.api.controller.TraceTerminalController;
 import cn.itcast.em.api.vo.FenceParam;
 import cn.itcast.em.api.vo.TraceParam;
 import cn.itcast.em.api.vo.TraceTerminalParam;
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.pojo.Trace;
 import cn.itcast.em.pojo.TraceFence;
 import cn.itcast.em.pojo.TraceServer;
@@ -57,14 +57,14 @@ public class AdminTraceController {
      * @return
      */
     @GetMapping("/trace/server")
-    public R<PageResult<TraceServerVO>> listTraceServer(@RequestParam("provider") ServerType provider,
+    public R<PageResult<TraceServerVO>> listTraceServer(@RequestParam("provider") ProviderType provider,
                                                         @RequestParam(value = "page", defaultValue = "1") Integer page,
                                                         @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
         PageResult<TraceServerVO> pageResult = new PageResult<>();
         pageResult.setPage(page);
         pageResult.setPageSize(pageSize);
 
-        R<List<TraceServer>> result = this.traceServerController.queryAll(provider.name());
+        R<List<TraceServer>> result = this.traceServerController.queryAll(provider);
         List<TraceServer> list = result.getData();
 
         if (CollUtil.isEmpty(list)) {
@@ -95,7 +95,7 @@ public class AdminTraceController {
      * @return
      */
     @GetMapping("trace")
-    public R<PageResult<Trace>> queryTracePageList(@RequestParam(value = "provider") String provider,
+    public R<PageResult<Trace>> queryTracePageList(@RequestParam(value = "provider") ProviderType provider,
                                                    @RequestParam(value = "page", defaultValue = "1") Integer page,
                                                    @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
                                                    @RequestParam(value = "traceId", required = false) Long traceId,
@@ -125,7 +125,7 @@ public class AdminTraceController {
      * @return
      */
     @DeleteMapping("trace/{traceId}")
-    public R<String> deleteTrace(@RequestParam(value = "provider") ServerType provider,
+    public R<String> deleteTrace(@RequestParam(value = "provider") ProviderType provider,
                                  @RequestParam(value = "serverId") Long serverId,
                                  @RequestParam(value = "terminalId") Long terminalId,
                                  @PathVariable("traceId") Long traceId) {
@@ -143,7 +143,7 @@ public class AdminTraceController {
      * @return
      */
     @GetMapping("fence")
-    public R<PageResult<TraceFence>> queryFenceList(@RequestParam(value = "provider", defaultValue = "NONE") ServerType provider,
+    public R<PageResult<TraceFence>> queryFenceList(@RequestParam(value = "provider", defaultValue = "NONE") ProviderType provider,
                                                     @RequestParam(value = "page", defaultValue = "1") Integer page,
                                                     @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
                                                     @RequestParam(value = "fenceName", required = false) String fenceName,
@@ -172,7 +172,7 @@ public class AdminTraceController {
      * @return 结果
      */
     @DeleteMapping("fence/{fenceId}")
-    public R<String> deleteFence(@RequestParam(value = "provider") ServerType provider,
+    public R<String> deleteFence(@RequestParam(value = "provider") ProviderType provider,
                                  @RequestParam(value = "serverId") Long serverId,
                                  @PathVariable("fenceId") Long fenceId) {
         FenceParam fenceParam = new FenceParam();
@@ -191,7 +191,7 @@ public class AdminTraceController {
      * @return
      */
     @GetMapping("fence/{fenceId}")
-    public R<TraceFence> queryByFenceId(@RequestParam(value = "provider", defaultValue = "NONE") ServerType provider,
+    public R<TraceFence> queryByFenceId(@RequestParam(value = "provider", defaultValue = "NONE") ProviderType provider,
                                         @RequestParam(value = "serverId") Long serverId,
                                         @PathVariable(value = "fenceId") Long fenceId) {
         return this.fenceController.queryByFenceId(provider, serverId, fenceId);
@@ -206,7 +206,7 @@ public class AdminTraceController {
      * @return
      */
     @DeleteMapping("/terminal/{terminalId}")
-    public R<String> deleteTerminal(@RequestParam(value = "provider", defaultValue = "NONE") ServerType provider,
+    public R<String> deleteTerminal(@RequestParam(value = "provider", defaultValue = "NONE") ProviderType provider,
                                     @RequestParam(value = "serverId") Long serverId,
                                     @PathVariable(value = "terminalId") Long terminalId) {
         TraceTerminalParam traceTerminalParam = new TraceTerminalParam();
@@ -230,7 +230,7 @@ public class AdminTraceController {
      * @return 终端列表
      */
     @GetMapping("/terminal")
-    public R<PageResult<TraceTerminalVO>> queryTerminalList(@RequestParam(value = "provider", defaultValue = "NONE") ServerType provider,
+    public R<PageResult<TraceTerminalVO>> queryTerminalList(@RequestParam(value = "provider", defaultValue = "NONE") ProviderType provider,
                                                             @RequestParam(value = "serverId") Long serverId,
                                                             @PathVariable(value = "fenceId", required = false) Long fenceId,
                                                             @PathVariable(value = "terminalId", required = false) Long terminalId,

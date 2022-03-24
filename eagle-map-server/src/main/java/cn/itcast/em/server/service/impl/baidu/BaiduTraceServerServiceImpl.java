@@ -3,7 +3,7 @@ package cn.itcast.em.server.service.impl.baidu;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.itcast.em.config.BaiduServerConfig;
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.mapper.TraceServerMapper;
 import cn.itcast.em.pojo.TraceServer;
 import cn.itcast.em.service.EagleOrdered;
@@ -37,7 +37,7 @@ public class BaiduTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, 
     @Override
     public String delete(Long serverId) {
         LambdaQueryWrapper<TraceServer> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(TraceServer::getProvider, ServerType.BAIDU);
+        lambdaQueryWrapper.eq(TraceServer::getProvider, ProviderType.BAIDU);
         lambdaQueryWrapper.eq(TraceServer::getServerId, serverId);
 
         boolean result = super.remove(lambdaQueryWrapper);
@@ -57,7 +57,7 @@ public class BaiduTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, 
 
         LambdaQueryWrapper<TraceServer> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(TraceServer::getServerId, serverId);
-        queryWrapper.eq(TraceServer::getProvider, ServerType.BAIDU);
+        queryWrapper.eq(TraceServer::getProvider, ProviderType.BAIDU);
 
         boolean result = super.update(traceServer, queryWrapper);
         if (result) {
@@ -70,14 +70,14 @@ public class BaiduTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, 
     @Override
     public List<TraceServer> queryAll() {
         LambdaQueryWrapper<TraceServer> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(TraceServer::getProvider, ServerType.BAIDU);
+        lambdaQueryWrapper.eq(TraceServer::getProvider, ProviderType.BAIDU);
         return super.list(lambdaQueryWrapper);
     }
 
     @Override
     public TraceServer queryByServerId(Long serverId) {
         LambdaQueryWrapper<TraceServer> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(TraceServer::getProvider, ServerType.BAIDU);
+        lambdaQueryWrapper.eq(TraceServer::getProvider, ProviderType.BAIDU);
         lambdaQueryWrapper.eq(TraceServer::getServerId, serverId);
         return super.getOne(lambdaQueryWrapper);
     }
@@ -87,7 +87,7 @@ public class BaiduTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, 
     public TraceServer queryAvailableServer() {
         LambdaQueryWrapper<TraceServer> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(TraceServer::getStatus, true);
-        queryWrapper.eq(TraceServer::getProvider, ServerType.BAIDU);
+        queryWrapper.eq(TraceServer::getProvider, ProviderType.BAIDU);
 
         List<TraceServer> serverList = super.list(queryWrapper);
         if (CollUtil.isNotEmpty(serverList)) {
@@ -100,7 +100,7 @@ public class BaiduTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, 
     public Boolean markNotAvailable(Long serverId) {
         LambdaQueryWrapper<TraceServer> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(TraceServer::getServerId, serverId);
-        queryWrapper.eq(TraceServer::getProvider, ServerType.BAIDU);
+        queryWrapper.eq(TraceServer::getProvider, ProviderType.BAIDU);
 
         TraceServer traceServer = new TraceServer();
         traceServer.setStatus(false);
@@ -124,7 +124,7 @@ public class BaiduTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, 
                     traceServer.setServerId(traceServerConfig.getId());
                     traceServer.setName(traceServerConfig.getName());
                     traceServer.setDesc(traceServerConfig.getType());
-                    traceServer.setProvider(ServerType.BAIDU);
+                    traceServer.setProvider(ProviderType.BAIDU);
                     traceServer.setStatus(true);
                     traceServer.setCreated(DateUtil.parse(traceServerConfig.getDate(), "yyyy-MM-dd"));
                     return traceServer;
@@ -133,7 +133,7 @@ public class BaiduTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, 
 
         for (TraceServer traceServer : traceServerList) {
             LambdaQueryWrapper<TraceServer> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-            lambdaQueryWrapper.eq(TraceServer::getProvider, ServerType.BAIDU);
+            lambdaQueryWrapper.eq(TraceServer::getProvider, ProviderType.BAIDU);
             lambdaQueryWrapper.eq(TraceServer::getServerId, traceServer.getServerId());
 
             if (super.count(lambdaQueryWrapper) == 0) {
@@ -141,5 +141,10 @@ public class BaiduTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, 
                 super.save(traceServer);
             }
         }
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.BAIDU;
     }
 }

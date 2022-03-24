@@ -4,6 +4,7 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
 import cn.itcast.em.config.BaiduServerConfig;
 import cn.itcast.em.config.EagleConfig;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.service.EagleOrdered;
 import cn.itcast.em.service.StaticMapService;
 import cn.itcast.em.vo.CoordinateVo;
@@ -50,5 +51,10 @@ public class BaiduStaticMapServiceImpl implements StaticMapService {
     @Override
     public int getOrder() {
         return EagleOrdered.TWO;
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.BAIDU;
     }
 }

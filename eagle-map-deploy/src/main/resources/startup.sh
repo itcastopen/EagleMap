@@ -28,7 +28,6 @@ error_exit ()
 }
 [ ! -e "$JAVA_HOME/bin/java" ] && JAVA_HOME=$HOME/jdk/java
 [ ! -e "$JAVA_HOME/bin/java" ] && JAVA_HOME=/usr/java
-[ ! -e "$JAVA_HOME/bin/java" ] && JAVA_HOME=/opt/taobao/java
 [ ! -e "$JAVA_HOME/bin/java" ] && unset JAVA_HOME
 
 if [ -z "$JAVA_HOME" ]; then
@@ -51,73 +50,35 @@ if [ -z "$JAVA_HOME" ]; then
   fi
 fi
 
-export SERVER="nacos-server"
-export MODE="cluster"
-export FUNCTION_MODE="all"
-export MEMBER_LIST=""
-export EMBEDDED_STORAGE=""
-while getopts ":m:f:s:c:p:" opt
-do
-    case $opt in
-        m)
-            MODE=$OPTARG;;
-        f)
-            FUNCTION_MODE=$OPTARG;;
-        s)
-            SERVER=$OPTARG;;
-        c)
-            MEMBER_LIST=$OPTARG;;
-        p)
-            EMBEDDED_STORAGE=$OPTARG;;
-        ?)
-        echo "Unknown parameter"
-        exit 1;;
-    esac
-done
+export SERVER="eagle-map-server"
 
 export JAVA_HOME
 export JAVA="$JAVA_HOME/bin/java"
 export BASE_DIR=`cd $(dirname $0)/..; pwd`
-export CUSTOM_SEARCH_LOCATIONS=file:${BASE_DIR}/conf/
+export CUSTOM_CONFIG_LOCATIONS=file:${BASE_DIR}/conf/
 
 #===========================================================================================
 # JVM Configuration
 #===========================================================================================
-if [[ "${MODE}" == "standalone" ]]; then
-    JAVA_OPT="${JAVA_OPT} -Xms512m -Xmx512m -Xmn256m"
-    JAVA_OPT="${JAVA_OPT} -Dnacos.standalone=true"
-else
-    if [[ "${EMBEDDED_STORAGE}" == "embedded" ]]; then
-        JAVA_OPT="${JAVA_OPT} -DembeddedStorage=true"
-    fi
-    JAVA_OPT="${JAVA_OPT} -server -Xms2g -Xmx2g -Xmn1g -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=320m"
-    JAVA_OPT="${JAVA_OPT} -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${BASE_DIR}/logs/java_heapdump.hprof"
-    JAVA_OPT="${JAVA_OPT} -XX:-UseLargePages"
+JAVA_OPT="${JAVA_OPT} -server -Xms512m -Xmx512m -Xmn256m -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=128m "
+JAVA_OPT="${JAVA_OPT} -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${BASE_DIR}/logs/java_heapdump.hprof"
+JAVA_OPT="${JAVA_OPT} -XX:-UseLargePages"
 
-fi
-
-if [[ "${FUNCTION_MODE}" == "config" ]]; then
-    JAVA_OPT="${JAVA_OPT} -Dnacos.functionMode=config"
-elif [[ "${FUNCTION_MODE}" == "naming" ]]; then
-    JAVA_OPT="${JAVA_OPT} -Dnacos.functionMode=naming"
-fi
-
-JAVA_OPT="${JAVA_OPT} -Dnacos.member.list=${MEMBER_LIST}"
-
+#gc log disable
 JAVA_MAJOR_VERSION=$($JAVA -version 2>&1 | sed -E -n 's/.* version "([0-9]*).*$/\1/p')
 if [[ "$JAVA_MAJOR_VERSION" -ge "9" ]] ; then
-  JAVA_OPT="${JAVA_OPT} -Xlog:gc*:file=${BASE_DIR}/logs/nacos_gc.log:time,tags:filecount=10,filesize=102400"
+  echo "The version of JDK is greater than or equal to 9, so there is no need to set the EXT directory."
+#  JAVA_OPT="${JAVA_OPT} -Xlog:gc*:file=${BASE_DIR}/logs/eagle_gc.log:time,tags:filecount=10,filesize=102400"
 else
   JAVA_OPT_EXT_FIX="-Djava.ext.dirs=${JAVA_HOME}/jre/lib/ext:${JAVA_HOME}/lib/ext"
-  JAVA_OPT="${JAVA_OPT} -Xloggc:${BASE_DIR}/logs/nacos_gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=100M"
+#  JAVA_OPT="${JAVA_OPT} -Xloggc:${BASE_DIR}/logs/eagle_gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=100M"
 fi
 
-JAVA_OPT="${JAVA_OPT} -Dloader.path=${BASE_DIR}/plugins/health,${BASE_DIR}/plugins/cmdb"
-JAVA_OPT="${JAVA_OPT} -Dnacos.home=${BASE_DIR}"
+JAVA_OPT="${JAVA_OPT} -Deagle.home=${BASE_DIR}"
 JAVA_OPT="${JAVA_OPT} -jar ${BASE_DIR}/target/${SERVER}.jar"
 JAVA_OPT="${JAVA_OPT} ${JAVA_OPT_EXT}"
-JAVA_OPT="${JAVA_OPT} --spring.config.additional-location=${CUSTOM_SEARCH_LOCATIONS}"
-JAVA_OPT="${JAVA_OPT} --logging.config=${BASE_DIR}/conf/nacos-logback.xml"
+JAVA_OPT="${JAVA_OPT} --spring.config.additional-location=${CUSTOM_CONFIG_LOCATIONS}"
+JAVA_OPT="${JAVA_OPT} --logging.config=${BASE_DIR}/conf/logback.xml"
 JAVA_OPT="${JAVA_OPT} --server.max-http-header-size=524288"
 
 if [ ! -d "${BASE_DIR}/logs" ]; then
@@ -126,17 +87,12 @@ fi
 
 echo "$JAVA $JAVA_OPT_EXT_FIX ${JAVA_OPT}"
 
-if [[ "${MODE}" == "standalone" ]]; then
-    echo "nacos is starting with standalone"
-else
-    echo "nacos is starting with cluster"
-fi
-
 # check the start.out log output file
 if [ ! -f "${BASE_DIR}/logs/start.out" ]; then
   touch "${BASE_DIR}/logs/start.out"
 fi
+
 # start
 echo "$JAVA $JAVA_OPT_EXT_FIX ${JAVA_OPT}" > ${BASE_DIR}/logs/start.out 2>&1 &
-nohup "$JAVA" "$JAVA_OPT_EXT_FIX" ${JAVA_OPT} nacos.nacos >> ${BASE_DIR}/logs/start.out 2>&1 &
-echo "nacos is starting，you can check the ${BASE_DIR}/logs/start.out"
+nohup "$JAVA" "$JAVA_OPT_EXT_FIX" ${JAVA_OPT} eagle.eagle >> ${BASE_DIR}/logs/start.out 2>&1 &
+echo "EagleMap is starting，you can check the ${BASE_DIR}/logs/start.out"

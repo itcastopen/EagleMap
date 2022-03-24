@@ -7,6 +7,7 @@ import cn.hutool.json.JSONUtil;
 import cn.itcast.em.config.BaiduServerConfig;
 import cn.itcast.em.config.EagleConfig;
 import cn.itcast.em.enums.CoordinateType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.service.CoordinateService;
 import cn.itcast.em.service.EagleOrdered;
 import cn.itcast.em.vo.CoordinateVo;
@@ -92,5 +93,10 @@ public class BaiduCoordinateServiceImpl implements CoordinateService {
     @Override
     public int getOrder() {
         return EagleOrdered.ONE;
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.BAIDU;
     }
 }

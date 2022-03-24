@@ -21,75 +21,23 @@ rem added double quotation marks to avoid the issue caused by the folder names c
 rem removed the last 5 chars(which means \bin\) to get the base DIR.
 set BASE_DIR="%BASE_DIR:~0,-5%"
 
-set CUSTOM_SEARCH_LOCATIONS=file:%BASE_DIR%/conf/
+set CUSTOM_CONFIG_LOCATIONS=file:%BASE_DIR%/conf/
 
-set MODE="cluster"
-set FUNCTION_MODE="all"
-set SERVER=nacos-server
-set MODE_INDEX=-1
-set FUNCTION_MODE_INDEX=-1
-set SERVER_INDEX=-1
-set EMBEDDED_STORAGE_INDEX=-1
-set EMBEDDED_STORAGE=""
+set SERVER=eagle-map-server
 
+rem set EagleMap options
+set "EAGLE_JVM_OPTS=-server -Xms512m -Xmx512m -Xmn256m -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=128m -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=%BASE_DIR%\logs\java_heapdump.hprof -XX:-UseLargePages"
+set "EAGLE_OPTS=%EAGLE_OPTS% -Deagle.home=%BASE_DIR%"
+set "EAGLE_OPTS=%EAGLE_OPTS% -jar %BASE_DIR%\target\%SERVER%.jar"
 
-set i=0
-for %%a in (%*) do (
-    if "%%a" == "-m" ( set /a MODE_INDEX=!i!+1 )
-    if "%%a" == "-f" ( set /a FUNCTION_MODE_INDEX=!i!+1 )
-    if "%%a" == "-s" ( set /a SERVER_INDEX=!i!+1 )
-    if "%%a" == "-p" ( set /a EMBEDDED_STORAGE_INDEX=!i!+1 )
-    set /a i+=1
-)
+rem set EagleMap spring config location
+set "EAGLE_CONFIG_OPTS=--spring.config.additional-location=%CUSTOM_CONFIG_LOCATIONS%"
 
-set i=0
-for %%a in (%*) do (
-    if %MODE_INDEX% == !i! ( set MODE="%%a" )
-    if %FUNCTION_MODE_INDEX% == !i! ( set FUNCTION_MODE="%%a" )
-    if %SERVER_INDEX% == !i! (set SERVER="%%a")
-    if %EMBEDDED_STORAGE_INDEX% == !i! (set EMBEDDED_STORAGE="%%a")
-    set /a i+=1
-)
-
-rem if nacos startup mode is standalone
-if %MODE% == "standalone" (
-    echo "nacos is starting with standalone"
-	  set "NACOS_OPTS=-Dnacos.standalone=true"
-    set "NACOS_JVM_OPTS=-Xms512m -Xmx512m -Xmn256m"
-)
-
-rem if nacos startup mode is cluster
-if %MODE% == "cluster" (
-    echo "nacos is starting with cluster"
-	  if %EMBEDDED_STORAGE% == "embedded" (
-	      set "NACOS_OPTS=-DembeddedStorage=true"
-	  )
-
-    set "NACOS_JVM_OPTS=-server -Xms2g -Xmx2g -Xmn1g -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=320m -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=%BASE_DIR%\logs\java_heapdump.hprof -XX:-UseLargePages"
-)
-
-rem set nacos's functionMode
-if %FUNCTION_MODE% == "config" (
-    set "NACOS_OPTS=%NACOS_OPTS% -Dnacos.functionMode=config"
-)
-
-if %FUNCTION_MODE% == "naming" (
-    set "NACOS_OPTS=%NACOS_OPTS% -Dnacos.functionMode=naming"
-)
-
-rem set nacos options
-set "NACOS_OPTS=%NACOS_OPTS% -Dloader.path=%BASE_DIR%/plugins/health,%BASE_DIR%/plugins/cmdb"
-set "NACOS_OPTS=%NACOS_OPTS% -Dnacos.home=%BASE_DIR%"
-set "NACOS_OPTS=%NACOS_OPTS% -jar %BASE_DIR%\target\%SERVER%.jar"
-
-rem set nacos spring config location
-set "NACOS_CONFIG_OPTS=--spring.config.additional-location=%CUSTOM_SEARCH_LOCATIONS%"
-
-rem set nacos log4j file location
-set "NACOS_LOG4J_OPTS=--logging.config=%BASE_DIR%/conf/nacos-logback.xml"
+rem set eagle log4j file location
+set "EAGLE_LOG4J_OPTS=--logging.config=%BASE_DIR%/conf/logback.xml"
 
 
-set COMMAND="%JAVA%" %NACOS_JVM_OPTS% %NACOS_OPTS% %NACOS_CONFIG_OPTS% %NACOS_LOG4J_OPTS% nacos.nacos %*
+set COMMAND="%JAVA%" %EAGLE_JVM_OPTS% %EAGLE_OPTS% %EAGLE_CONFIG_OPTS% %EAGLE_LOG4J_OPTS% eagle.eagle %*
 
-rem start nacos command
+rem start eagle command
 %COMMAND%

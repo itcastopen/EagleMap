@@ -4,6 +4,7 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
 import cn.itcast.em.config.AMapServerConfig;
 import cn.itcast.em.config.EagleConfig;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.service.EagleOrdered;
 import cn.itcast.em.service.StaticMapService;
 import cn.itcast.em.vo.CoordinateVo;
@@ -52,5 +53,10 @@ public class AMapStaticMapServiceImpl implements StaticMapService {
             }
             return Base64.encode(response.bodyStream());
         });
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.AMAP;
     }
 }

@@ -1,6 +1,6 @@
 package cn.itcast.em.pojo;
 
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class Trace extends BasePojo {
 
-    private ServerType provider; //地图服务商
+    private ProviderType provider; //地图服务商
     private Long serverId; //所属的服务id
     private Long terminalId; //所属的终端id
     private Long traceId; //地图服务商的轨迹id

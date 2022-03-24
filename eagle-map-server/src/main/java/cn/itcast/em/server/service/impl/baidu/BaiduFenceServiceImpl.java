@@ -10,7 +10,7 @@ import cn.itcast.em.config.BaiduServerConfig;
 import cn.itcast.em.config.EagleConfig;
 import cn.itcast.em.enums.CoordinateType;
 import cn.itcast.em.enums.FenceType;
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.exception.EagleMapException;
 import cn.itcast.em.mapper.TraceFenceMapper;
 import cn.itcast.em.mapper.TraceTerminalMapper;
@@ -115,7 +115,7 @@ public class BaiduFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFe
             traceFence.setServerId(serverId);
             traceFence.setName(name);
             traceFence.setDesc(desc);
-            traceFence.setProvider(ServerType.BAIDU);
+            traceFence.setProvider(ProviderType.BAIDU);
             traceFence.setParam(JSONUtil.toJsonStr(param));
             traceFence.setType(fenceType);
             super.save(traceFence);
@@ -188,7 +188,7 @@ public class BaiduFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFe
 
             LambdaQueryWrapper<TraceFence> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(TraceFence::getFenceId, fenceId);
-            queryWrapper.eq(TraceFence::getProvider, ServerType.BAIDU);
+            queryWrapper.eq(TraceFence::getProvider, ProviderType.BAIDU);
             queryWrapper.eq(TraceFence::getServerId, serverId);
             super.update(traceFence, queryWrapper);
 
@@ -225,7 +225,7 @@ public class BaiduFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFe
             //删除数据库中的围栏数据
             LambdaQueryWrapper<TraceFence> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.in(TraceFence::getFenceId, fenceIds);
-            queryWrapper.eq(TraceFence::getProvider, ServerType.BAIDU);
+            queryWrapper.eq(TraceFence::getProvider, ProviderType.BAIDU);
             queryWrapper.eq(TraceFence::getServerId, serverId);
             super.remove(queryWrapper);
 
@@ -336,7 +336,7 @@ public class BaiduFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFe
 
                 //查询终端列表
                 LambdaQueryWrapper<TraceTerminal> queryWrapper = new LambdaQueryWrapper<>();
-                queryWrapper.eq(TraceTerminal::getProvider, ServerType.BAIDU);
+                queryWrapper.eq(TraceTerminal::getProvider, ProviderType.BAIDU);
                 queryWrapper.eq(TraceTerminal::getServerId, serverId);
                 queryWrapper.in(TraceTerminal::getName, terminalNames);
                 return this.traceTerminalMapper.selectList(queryWrapper);
@@ -362,7 +362,7 @@ public class BaiduFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFe
     public R<PageResult<TraceFence>> queryFenceList(Integer page, Integer pageSize) {
         Page<TraceFence> traceFencePage = new Page<>(page, pageSize);
         LambdaQueryWrapper<TraceFence> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(TraceFence::getProvider, ServerType.BAIDU);
+        queryWrapper.eq(TraceFence::getProvider, ProviderType.BAIDU);
         queryWrapper.orderByDesc(TraceFence::getCreated);
         super.page(traceFencePage, queryWrapper);
         return R.success(new PageResult<TraceFence>().convert(traceFencePage));
@@ -378,7 +378,7 @@ public class BaiduFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFe
     @Override
     public R<TraceFence> queryByFenceId(Long serverId, Long fenceId) {
         LambdaQueryWrapper<TraceFence> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(TraceFence::getProvider, ServerType.BAIDU);
+        queryWrapper.eq(TraceFence::getProvider, ProviderType.BAIDU);
         queryWrapper.eq(TraceFence::getFenceId, fenceId);
         queryWrapper.eq(TraceFence::getServerId, serverId);
         TraceFence traceFence = super.getOne(queryWrapper);
@@ -428,12 +428,17 @@ public class BaiduFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFe
         if (StrUtil.isNotEmpty(fenceName)) {
             queryWrapper.like(TraceFence::getName, fenceName);
         }
-        queryWrapper.eq(TraceFence::getProvider, ServerType.BAIDU);
+        queryWrapper.eq(TraceFence::getProvider, ProviderType.BAIDU);
         return R.success(super.list(queryWrapper));
     }
 
     @Override
     public int getOrder() {
         return EagleOrdered.TWO;
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.BAIDU;
     }
 }

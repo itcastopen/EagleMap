@@ -7,7 +7,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.itcast.em.config.AMapServerConfig;
 import cn.itcast.em.config.EagleConfig;
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.mapper.TraceServerMapper;
 import cn.itcast.em.pojo.TraceServer;
 import cn.itcast.em.service.EagleOrdered;
@@ -60,7 +60,7 @@ public class AMapTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, T
 
             //将服务数据存储到数据库
             TraceServer traceServer = new TraceServer();
-            traceServer.setProvider(ServerType.AMAP);
+            traceServer.setProvider(ProviderType.AMAP);
             traceServer.setName(name);
             traceServer.setDesc(desc);
             traceServer.setStatus(true);
@@ -88,7 +88,7 @@ public class AMapTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, T
             //删除数据库中的数据
             LambdaQueryWrapper<TraceServer> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(TraceServer::getServerId, serverId);
-            queryWrapper.eq(TraceServer::getProvider, ServerType.AMAP);
+            queryWrapper.eq(TraceServer::getProvider, ProviderType.AMAP);
             return super.remove(queryWrapper) ? null : "err";
         });
     }
@@ -115,7 +115,7 @@ public class AMapTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, T
 
             LambdaQueryWrapper<TraceServer> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(TraceServer::getServerId, serverId);
-            queryWrapper.eq(TraceServer::getProvider, ServerType.AMAP);
+            queryWrapper.eq(TraceServer::getProvider, ProviderType.AMAP);
 
             return super.update(traceServer, queryWrapper) ? null : "err";
         });
@@ -145,12 +145,12 @@ public class AMapTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, T
                 traceServer.setServerId(obj.getLong("sid"));
                 traceServer.setName(obj.getStr("name"));
                 traceServer.setDesc(obj.getStr("desc"));
-                traceServer.setProvider(ServerType.AMAP);
+                traceServer.setProvider(ProviderType.AMAP);
 
                 //查询数据库补全字段
                 LambdaQueryWrapper<TraceServer> queryWrapper = new LambdaQueryWrapper<>();
                 queryWrapper.eq(TraceServer::getServerId, traceServer.getServerId());
-                queryWrapper.eq(TraceServer::getProvider, ServerType.AMAP);
+                queryWrapper.eq(TraceServer::getProvider, ProviderType.AMAP);
                 TraceServer traceServerData = super.getOne(queryWrapper);
 
                 traceServer.setStatus(traceServerData.getStatus());
@@ -166,7 +166,7 @@ public class AMapTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, T
     public TraceServer queryByServerId(Long serverId) {
         LambdaQueryWrapper<TraceServer> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(TraceServer::getServerId, serverId);
-        queryWrapper.eq(TraceServer::getProvider, ServerType.AMAP);
+        queryWrapper.eq(TraceServer::getProvider, ProviderType.AMAP);
         return super.getOne(queryWrapper);
     }
 
@@ -179,7 +179,7 @@ public class AMapTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, T
     public TraceServer queryAvailableServer() {
         LambdaQueryWrapper<TraceServer> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(TraceServer::getStatus, true);
-        queryWrapper.eq(TraceServer::getProvider, ServerType.AMAP);
+        queryWrapper.eq(TraceServer::getProvider, ProviderType.AMAP);
 
         List<TraceServer> serverList = super.list(queryWrapper);
         if (CollUtil.isNotEmpty(serverList)) {
@@ -192,10 +192,15 @@ public class AMapTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, T
     public Boolean markNotAvailable(Long serverId) {
         LambdaQueryWrapper<TraceServer> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(TraceServer::getServerId, serverId);
-        queryWrapper.eq(TraceServer::getProvider, ServerType.AMAP);
+        queryWrapper.eq(TraceServer::getProvider, ProviderType.AMAP);
 
         TraceServer traceServer = new TraceServer();
         traceServer.setStatus(false);
         return super.update(traceServer, queryWrapper);
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.AMAP;
     }
 }

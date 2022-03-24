@@ -7,6 +7,13 @@ spring:
     username: root
     password: root
 eagle:
+  #默认策略，可选参数：BAIDU、AMAP、NONE，默认：NONE
+  #如果指定了默认策略，在接口中不指定服务商时才用的策略，如果指定NONE，有系统来决定
+  default-provider-strategy: BAIDU
+  baidu-web-api: https://api.map.baidu.com
+  baidu-ying-yan-api: http://yingyan.baidu.com
+  amap-web-api: https://restapi.amap.com
+  amap-ts-api: https://tsapi.amap.com
   admin:
     user: eagle
     password: b09315ea09c6d3b5680094257f1f70e4

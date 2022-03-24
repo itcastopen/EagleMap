@@ -3,9 +3,10 @@ package cn.itcast.em.api.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.itcast.em.api.vo.TraceTerminalParam;
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.pojo.TraceTerminal;
 import cn.itcast.em.service.TraceTerminalService;
+import cn.itcast.em.service.impl.EagleMapServiceFactory;
 import cn.itcast.em.vo.PageResult;
 import cn.itcast.em.vo.R;
 import io.swagger.annotations.Api;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "轨迹终端管理")
 @RequestMapping("/api/trace/terminal")
 @RestController
-public class TraceTerminalController extends BaseController<TraceTerminalService> {
+public class TraceTerminalController extends BaseController {
 
     /**
      * 创建终端
@@ -28,7 +29,7 @@ public class TraceTerminalController extends BaseController<TraceTerminalService
     @ApiOperation(value = "创建终端", notes = "百度地图：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/entity<br/>高德地图：https://lbs.amap.com/api/track/lieying-kaifa/api/terminal")
     @PostMapping
     public R<String> create(@RequestBody TraceTerminalParam traceTerminalParam) {
-        TraceTerminalService traceTerminalService = super.chooseService(traceTerminalParam.getProvider());
+        TraceTerminalService traceTerminalService = EagleMapServiceFactory.getService(traceTerminalParam.getProvider(), TraceTerminalService.class);
         String result;
         if (traceTerminalParam.getServerId() != null) {
             //指定服务id
@@ -58,7 +59,7 @@ public class TraceTerminalController extends BaseController<TraceTerminalService
     @ApiOperation(value = "删除终端", notes = "百度地图：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/entity<br/>高德地图：https://lbs.amap.com/api/track/lieying-kaifa/api/terminal")
     @DeleteMapping
     public R<String> delete(@RequestBody TraceTerminalParam traceTerminalParam) {
-        TraceTerminalService traceTerminalService = super.chooseService(traceTerminalParam.getProvider());
+        TraceTerminalService traceTerminalService = EagleMapServiceFactory.getService(traceTerminalParam.getProvider(), TraceTerminalService.class);
         String result = traceTerminalService.delete(traceTerminalParam.getServerId(), traceTerminalParam.getTerminalId());
         if (StrUtil.contains(result, "err")) {
             return R.error(result);
@@ -75,7 +76,7 @@ public class TraceTerminalController extends BaseController<TraceTerminalService
     @ApiOperation(value = "更新终端", notes = "百度地图：https://lbsyun.baidu.com/index.php?title=yingyan/api/v3/entity<br/>高德地图：https://lbs.amap.com/api/track/lieying-kaifa/api/terminal")
     @PutMapping
     public R<String> update(@RequestBody TraceTerminalParam traceTerminalParam) {
-        TraceTerminalService traceTerminalService = super.chooseService(traceTerminalParam.getProvider());
+        TraceTerminalService traceTerminalService = EagleMapServiceFactory.getService(traceTerminalParam.getProvider(), TraceTerminalService.class);
         String result = traceTerminalService.update(BeanUtil.toBeanIgnoreError(traceTerminalParam, TraceTerminal.class));
         if (StrUtil.contains(result, "err")) {
             return R.error(result);
@@ -99,13 +100,13 @@ public class TraceTerminalController extends BaseController<TraceTerminalService
             @ApiImplicitParam(name = "pageSize", value = "页面大小，默认：50")})
     @ApiOperation(value = "查询终端列表", notes = "查询终端列表，如果指定了 终端id 或 名称 将查询具体的数据，否则查询列表数据")
     @GetMapping
-    public R<PageResult<TraceTerminal>> queryList(@RequestParam(value = "provider", defaultValue = "NONE") ServerType provider,
+    public R<PageResult<TraceTerminal>> queryList(@RequestParam(value = "provider", defaultValue = "NONE") ProviderType provider,
                                                   @RequestParam(value = "serverId") Long serverId,
                                                   @RequestParam(value = "terminalId", required = false) Long terminalId,
                                                   @RequestParam(value = "name", required = false) String name,
                                                   @RequestParam(value = "page", defaultValue = "1") Integer page,
                                                   @RequestParam(value = "pageSize", defaultValue = "50") Integer pageSize) {
-        TraceTerminalService traceTerminalService = super.chooseService(provider);
+        TraceTerminalService traceTerminalService = EagleMapServiceFactory.getService(provider, TraceTerminalService.class);
         PageResult<TraceTerminal> pageResult = traceTerminalService.queryList(serverId, terminalId, name, page, pageSize);
         return R.success(pageResult);
     }
@@ -120,11 +121,11 @@ public class TraceTerminalController extends BaseController<TraceTerminalService
             @ApiImplicitParam(name = "traceId", value = "轨迹id")})
     @ApiOperation(value = "查询终端在某个轨迹中的最新位置", notes = "查询终端在某个轨迹中的最新位置")
     @GetMapping("last/point")
-    public R<String> queryLastPoint(@RequestParam(value = "provider", defaultValue = "NONE") ServerType provider,
+    public R<String> queryLastPoint(@RequestParam(value = "provider", defaultValue = "NONE") ProviderType provider,
                                     @RequestParam(value = "serverId") Long serverId,
                                     @RequestParam(value = "terminalId") Long terminalId,
                                     @RequestParam(value = "traceId", required = false) Long traceId) {
-        TraceTerminalService traceTerminalService = super.chooseService(provider);
+        TraceTerminalService traceTerminalService = EagleMapServiceFactory.getService(provider, TraceTerminalService.class);
         String result = traceTerminalService.queryLastPoint(serverId, terminalId, traceId);
         return R.success(result);
     }

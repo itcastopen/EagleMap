@@ -1,11 +1,8 @@
 package cn.itcast.em.service;
 
 import cn.itcast.em.pojo.TraceTerminal;
-import cn.itcast.em.service.EagleMapService;
-import cn.itcast.em.vo.CoordinateVo;
 import cn.itcast.em.vo.PageResult;
 
-import java.util.List;
 import java.util.Map;
 
 /**

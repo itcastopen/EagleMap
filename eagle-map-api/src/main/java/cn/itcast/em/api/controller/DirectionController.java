@@ -3,6 +3,7 @@ package cn.itcast.em.api.controller;
 import cn.hutool.core.util.StrUtil;
 import cn.itcast.em.api.vo.DirectionParam;
 import cn.itcast.em.service.DirectionService;
+import cn.itcast.em.service.impl.EagleMapServiceFactory;
 import cn.itcast.em.vo.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "路线规划")
 @RestController
 @RequestMapping("api/direction")
-public class DirectionController extends BaseController<DirectionService> {
+public class DirectionController extends BaseController {
 
     /**
      * 驾车路线规划
@@ -26,7 +27,7 @@ public class DirectionController extends BaseController<DirectionService> {
     @PostMapping("driving")
     public R<String> driving(@RequestBody DirectionParam directionParam) {
         //选择地图服务商
-        DirectionService directionService = super.chooseService(directionParam.getProvider());
+        DirectionService directionService = EagleMapServiceFactory.getService(directionParam.getProvider(), DirectionService.class);
         String drivingResult = directionService.driving(directionParam.getOrigin(),
                 directionParam.getDestination(), directionParam.getParam());
         if (StrUtil.startWithIgnoreCase(drivingResult, "error")) {
@@ -45,7 +46,7 @@ public class DirectionController extends BaseController<DirectionService> {
     @PostMapping("walking")
     public R<String> walking(@RequestBody DirectionParam directionParam) {
         //选择地图服务商
-        DirectionService directionService = super.chooseService(directionParam.getProvider());
+        DirectionService directionService = EagleMapServiceFactory.getService(directionParam.getProvider(), DirectionService.class);
         String drivingResult = directionService.walking(directionParam.getOrigin(),
                 directionParam.getDestination(), directionParam.getParam());
         if (StrUtil.startWithIgnoreCase(drivingResult, "error")) {
@@ -65,7 +66,7 @@ public class DirectionController extends BaseController<DirectionService> {
     @PostMapping("bicycling")
     public R<String> bicycling(@RequestBody DirectionParam directionParam) {
         //选择地图服务商
-        DirectionService directionService = super.chooseService(directionParam.getProvider());
+        DirectionService directionService = EagleMapServiceFactory.getService(directionParam.getProvider(), DirectionService.class);
         String drivingResult = directionService.bicycling(directionParam.getOrigin(),
                 directionParam.getDestination(), directionParam.getParam());
         if (StrUtil.startWithIgnoreCase(drivingResult, "error")) {

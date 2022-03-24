@@ -6,29 +6,40 @@
         <format>tar.gz</format>
     </formats>
 
-    <includeBaseDirectory>true</includeBaseDirectory>
+    <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <!-- 程序运行的jar包 -->
         <fileSet>
             <directory>../eagle-map-server/target/</directory>
-            <outputDirectory>target</outputDirectory>
+            <outputDirectory>EagleMap/target</outputDirectory>
             <includes>
-                <include>**/*.jar</include>
+                <include>eagle-map-server.jar</include>
             </includes>
             <fileMode>0755</fileMode><!--文件执行权限-->
         </fileSet>
         <!-- 程序运行的启动脚本 -->
         <fileSet>
             <directory>src/main/resources</directory>
-            <outputDirectory>bin</outputDirectory>   <!-- 打包的文件解压后放在该目录下 -->
+            <outputDirectory>EagleMap/bin</outputDirectory>   <!-- 打包的文件解压后放在该目录下 -->
             <includes>
                 <include>*</include>
+            </includes>
+            <excludes>
+                <exclude>*.xml</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>   <!--文件执行权限-->
+        </fileSet>
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>EagleMap/conf</outputDirectory>   <!-- 打包的文件解压后放在该目录下 -->
+            <includes>
+                <include>*.xml</include>
             </includes>
             <fileMode>0755</fileMode>   <!--文件执行权限-->
         </fileSet>
         <!--日志-->
         <fileSet>
-            <outputDirectory>logs</outputDirectory> <!--创建空目录-->
+            <outputDirectory>EagleMap/logs</outputDirectory> <!--创建空目录-->
             <excludes>
                 <exclude>**/*</exclude>
             </excludes>
@@ -37,9 +48,9 @@
         <fileSet>
             <!-- 配置文件，这里只导入 application-eagle.yml 即可-->
             <directory>../eagle-map-server/target/classes</directory>
-            <outputDirectory>conf</outputDirectory>
+            <outputDirectory>EagleMap/conf</outputDirectory>
             <includes>
-                <include>application-eagle.yml</include>
+                <include>application.yml</include>
             </includes>
             <fileMode>0755</fileMode>
         </fileSet>

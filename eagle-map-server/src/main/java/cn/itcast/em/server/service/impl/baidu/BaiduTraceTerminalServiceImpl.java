@@ -6,11 +6,10 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import cn.itcast.em.config.AMapServerConfig;
 import cn.itcast.em.config.BaiduServerConfig;
 import cn.itcast.em.config.EagleConfig;
 import cn.itcast.em.enums.CoordinateType;
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.mapper.TraceTerminalMapper;
 import cn.itcast.em.pojo.TraceServer;
 import cn.itcast.em.pojo.TraceTerminal;
@@ -81,7 +80,7 @@ public class BaiduTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMapp
             long id = IdUtil.getSnowflake().nextId();
             TraceTerminal traceTerminal = new TraceTerminal();
             traceTerminal.setId(id);
-            traceTerminal.setProvider(ServerType.BAIDU);
+            traceTerminal.setProvider(ProviderType.BAIDU);
             traceTerminal.setName(name);
             traceTerminal.setDesc(desc);
             traceTerminal.setServerId(serverId);
@@ -181,7 +180,7 @@ public class BaiduTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMapp
             //根据名称查询
             LambdaQueryWrapper<TraceTerminal> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(TraceTerminal::getName, name);
-            queryWrapper.eq(TraceTerminal::getProvider, ServerType.BAIDU);
+            queryWrapper.eq(TraceTerminal::getProvider, ProviderType.BAIDU);
             queryWrapper.eq(TraceTerminal::getServerId, serverId);
             pageResult.getItems().add(super.getOne(queryWrapper));
             return pageResult;
@@ -189,7 +188,7 @@ public class BaiduTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMapp
 
         //数据库查询列表
         LambdaQueryWrapper<TraceTerminal> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(TraceTerminal::getProvider, ServerType.BAIDU);
+        queryWrapper.eq(TraceTerminal::getProvider, ProviderType.BAIDU);
         queryWrapper.eq(TraceTerminal::getServerId, serverId);
         queryWrapper.orderByDesc(TraceTerminal::getCreated);
 
@@ -224,6 +223,11 @@ public class BaiduTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMapp
     @Override
     public int getOrder() {
         return EagleOrdered.TWO;
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.BAIDU;
     }
 
 }

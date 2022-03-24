@@ -9,14 +9,13 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.itcast.em.config.AMapServerConfig;
 import cn.itcast.em.config.EagleConfig;
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.mapper.TraceTerminalMapper;
 import cn.itcast.em.pojo.TraceServer;
 import cn.itcast.em.pojo.TraceTerminal;
 import cn.itcast.em.service.EagleOrdered;
 import cn.itcast.em.service.TraceServerService;
 import cn.itcast.em.service.TraceTerminalService;
-import cn.itcast.em.vo.CoordinateVo;
 import cn.itcast.em.vo.PageResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -74,7 +73,7 @@ public class AMapTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMappe
 
             //将服务数据存储到数据库
             TraceTerminal traceTerminal = new TraceTerminal();
-            traceTerminal.setProvider(ServerType.AMAP);
+            traceTerminal.setProvider(ProviderType.AMAP);
             traceTerminal.setName(name);
             traceTerminal.setDesc(desc);
             traceTerminal.setServerId(serverId);
@@ -133,7 +132,7 @@ public class AMapTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMappe
             LambdaQueryWrapper<TraceTerminal> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(TraceTerminal::getServerId, serverId);
             queryWrapper.eq(TraceTerminal::getTerminalId, terminalId);
-            queryWrapper.eq(TraceTerminal::getProvider, ServerType.AMAP);
+            queryWrapper.eq(TraceTerminal::getProvider, ProviderType.AMAP);
             return super.remove(queryWrapper) ? null : "err";
         });
     }
@@ -159,7 +158,7 @@ public class AMapTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMappe
             LambdaQueryWrapper<TraceTerminal> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(TraceTerminal::getServerId, traceTerminal.getServerId());
             queryWrapper.eq(TraceTerminal::getTerminalId, traceTerminal.getTerminalId());
-            queryWrapper.eq(TraceTerminal::getProvider, ServerType.AMAP);
+            queryWrapper.eq(TraceTerminal::getProvider, ProviderType.AMAP);
 
             return super.update(traceTerminal, queryWrapper) ? null : "err";
         });
@@ -196,7 +195,7 @@ public class AMapTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMappe
                 JSONObject obj = ((JSONObject) o);
                 TraceTerminal traceTerminal = new TraceTerminal();
                 traceTerminal.setServerId(serverId);
-                traceTerminal.setProvider(ServerType.AMAP);
+                traceTerminal.setProvider(ProviderType.AMAP);
                 traceTerminal.setTerminalId(obj.getLong("tid"));
                 traceTerminal.setName(obj.getStr("name"));
                 traceTerminal.setDesc(obj.getStr("desc"));
@@ -232,5 +231,10 @@ public class AMapTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMappe
     @Override
     public int getOrder() {
         return EagleOrdered.ONE;
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.AMAP;
     }
 }

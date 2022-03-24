@@ -8,6 +8,7 @@ import cn.hutool.json.JSONUtil;
 import cn.itcast.em.config.AMapServerConfig;
 import cn.itcast.em.config.EagleConfig;
 import cn.itcast.em.enums.CoordinateType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.service.CoordinateService;
 import cn.itcast.em.service.EagleOrdered;
 import cn.itcast.em.vo.CoordinateVo;
@@ -95,5 +96,10 @@ public class AMapCoordinateServiceImpl implements CoordinateService {
     @Override
     public int getOrder() {
         return EagleOrdered.TWO;
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.AMAP;
     }
 }

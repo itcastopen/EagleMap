@@ -1,15 +1,13 @@
 package cn.itcast.em.pojo;
 
 import cn.itcast.em.enums.FenceType;
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-
-import java.util.Date;
 
 /**
  * 电子围栏
@@ -21,7 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class TraceFence extends BasePojo {
 
-    private ServerType provider; //地图服务商
+    private ProviderType provider; //地图服务商
     private Long serverId; //地图服务商中的服务id
     private Long fenceId; //地图服务商的围栏id
     private String name; //围栏名称

@@ -1,6 +1,6 @@
 package cn.itcast.em.pojo;
 
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TraceTerminal extends BasePojo {
 
-    private ServerType provider; //地图服务商
+    private ProviderType provider; //地图服务商
     private Long serverId; //地图服务商中的服务id
     private Long terminalId; //终端id
     private String name; //终端名称

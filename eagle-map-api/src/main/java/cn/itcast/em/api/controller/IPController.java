@@ -1,7 +1,8 @@
 package cn.itcast.em.api.controller;
 
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.service.IPService;
+import cn.itcast.em.service.impl.EagleMapServiceFactory;
 import cn.itcast.em.vo.IpResultVo;
 import cn.itcast.em.vo.R;
 import io.swagger.annotations.Api;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "地图基础服务")
 @RestController
 @RequestMapping("api/ip")
-public class IPController extends BaseController<IPService> {
+public class IPController extends BaseController {
 
     /**
      * ip定位
@@ -33,8 +34,9 @@ public class IPController extends BaseController<IPService> {
     public R<IpResultVo> query(@RequestParam("ip") String ip,
                                @RequestParam(value = "type", defaultValue = "4")
                                        Integer type,
-                               @RequestParam(value = "provider", defaultValue = "NONE") ServerType provider) {
-        return R.success(super.chooseService(provider).query(ip, type));
+                               @RequestParam(value = "provider", defaultValue = "NONE") ProviderType provider) {
+        IPService ipService = EagleMapServiceFactory.getService(provider, IPService.class);
+        return R.success(ipService.query(ip, type));
     }
 
 }

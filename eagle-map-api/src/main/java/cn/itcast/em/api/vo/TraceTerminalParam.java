@@ -1,6 +1,6 @@
 package cn.itcast.em.api.vo;
 
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import java.util.Map;
 public class TraceTerminalParam {
 
     @ApiModelProperty(value = "服务提供商，必须大写，默认：高德地图 ", example = "NONE")
-    private ServerType provider = ServerType.NONE;
+    private ProviderType provider = ProviderType.NONE;
     @ApiModelProperty(value = "地图服务商中的服务id ", required = true)
     private Long serverId; //地图服务商中的服务id
     @ApiModelProperty(value = "终端id，创建时无需指定", required = true)

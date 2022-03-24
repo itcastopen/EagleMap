@@ -5,9 +5,8 @@ import cn.itcast.em.admin.vo.SystemConfig;
 import cn.itcast.em.config.AMapServerConfig;
 import cn.itcast.em.config.BaiduServerConfig;
 import cn.itcast.em.config.EagleConfig;
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.vo.R;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,7 +68,7 @@ public class SystemController {
      */
     @GetMapping("ak")
     @NoAuthorization
-    public R<String> querySystemConfig(@RequestParam("provider") ServerType provider) {
+    public R<String> querySystemConfig(@RequestParam("provider") ProviderType provider) {
         switch (provider) {
             case BAIDU: {
                 return R.success(this.eagleConfig.getBaidu().getBrowser().getAk());

@@ -6,6 +6,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.itcast.em.config.BaiduServerConfig;
 import cn.itcast.em.config.EagleConfig;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.service.DirectionService;
 import cn.itcast.em.service.EagleOrdered;
 import cn.itcast.em.vo.CoordinateVo;
@@ -107,5 +108,10 @@ public class BaiduDirectionServiceImpl implements DirectionService {
 
             return jsonObject.getJSONObject("result").toString();
         });
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.BAIDU;
     }
 }

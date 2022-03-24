@@ -1,17 +1,16 @@
 package cn.itcast.em.api.vo;
 
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Map;
 
 @Data
 public class FenceParam {
 
     @ApiModelProperty(value = "服务提供商，必须大写，默认为：高德地图", example = "NONE")
-    private ServerType provider = ServerType.NONE;
+    private ProviderType provider = ProviderType.NONE;
     @ApiModelProperty(value = "地图服务商中的服务id", required = true)
     private Long serverId; //地图服务商中的服务id
     @ApiModelProperty(value = "围栏名称", required = true)

@@ -1,20 +1,14 @@
 package cn.itcast.em.api.vo;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.itcast.em.enums.ServerType;
-import cn.itcast.em.pojo.TraceServer;
-import cn.itcast.em.vo.CoordinateVo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import cn.itcast.em.enums.ProviderType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import java.util.Map;
 
 @Data
 public class TraceServerParam {
 
     @ApiModelProperty(value = "服务提供商，必须大写，默认：高德地图 ", example = "NONE")
-    private ServerType provider = ServerType.NONE;
+    private ProviderType provider = ProviderType.NONE;
     @ApiModelProperty(value = "服务名称", required = true)
     private String name;
     @ApiModelProperty(value = "服务描述")

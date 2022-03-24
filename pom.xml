@@ -11,6 +11,7 @@
         <module>eagle-map-config</module>
         <module>eagle-map-admin</module>
         <module>eagle-map-deploy</module>
+        <module>eagle-map-service</module>
     </modules>
 
     <parent>

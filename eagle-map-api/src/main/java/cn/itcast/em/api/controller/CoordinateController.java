@@ -5,6 +5,7 @@ import cn.itcast.em.api.vo.ConvertParam;
 import cn.itcast.em.api.vo.ConvertToGcj02Param;
 import cn.itcast.em.enums.CoordinateType;
 import cn.itcast.em.service.CoordinateService;
+import cn.itcast.em.service.impl.EagleMapServiceFactory;
 import cn.itcast.em.vo.CoordinateVo;
 import cn.itcast.em.vo.R;
 import io.swagger.annotations.Api;
@@ -19,7 +20,7 @@ import java.util.List;
 @Api(tags = "地图基础服务")
 @RestController
 @RequestMapping("api/coordinate")
-public class CoordinateController extends BaseController<CoordinateService> {
+public class CoordinateController extends BaseController {
 
     /**
      * 将指定的坐标转化为gcj02坐标体系
@@ -31,7 +32,8 @@ public class CoordinateController extends BaseController<CoordinateService> {
     @PostMapping("convert/gcj02")
     public R<List<CoordinateVo>> convertToGcj02(@RequestBody ConvertToGcj02Param param) {
         CoordinateType coordinateType = CoordinateType.valueOf(param.getFromType());
-        List<CoordinateVo> list = super.chooseService(param.getProvider()).convertToGcj02(coordinateType, param.getCoordinates());
+        CoordinateService coordinateService = EagleMapServiceFactory.getService(param.getProvider(), CoordinateService.class);
+        List<CoordinateVo> list = coordinateService.convertToGcj02(coordinateType, param.getCoordinates());
         if (CollUtil.isEmpty(list)) {
             return R.error("Convert to gcj02 failed.");
         }
@@ -49,7 +51,8 @@ public class CoordinateController extends BaseController<CoordinateService> {
     public R<CoordinateVo> convert(@RequestBody ConvertParam convertParam) {
         CoordinateType coordinateFromType = CoordinateType.valueOf(convertParam.getFromType());
         CoordinateType coordinateToType = CoordinateType.valueOf(convertParam.getToType());
-        CoordinateVo result = super.chooseService(convertParam.getProvider()).convert(convertParam.getCoordinate(), coordinateFromType, coordinateToType);
+        CoordinateService coordinateService = EagleMapServiceFactory.getService(convertParam.getProvider(), CoordinateService.class);
+        CoordinateVo result = coordinateService.convert(convertParam.getCoordinate(), coordinateFromType, coordinateToType);
         if (null == result) {
             return R.error("Convert failed.");
         }

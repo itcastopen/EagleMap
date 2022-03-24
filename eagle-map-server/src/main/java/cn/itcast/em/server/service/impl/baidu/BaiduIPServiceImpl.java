@@ -4,6 +4,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.itcast.em.config.BaiduServerConfig;
 import cn.itcast.em.config.EagleConfig;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.service.EagleOrdered;
 import cn.itcast.em.service.IPService;
 import cn.itcast.em.util.Constants;
@@ -67,5 +68,10 @@ public class BaiduIPServiceImpl implements IPService {
             ipResultVo.setIp(ip);
             return ipResultVo;
         });
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.BAIDU;
     }
 }

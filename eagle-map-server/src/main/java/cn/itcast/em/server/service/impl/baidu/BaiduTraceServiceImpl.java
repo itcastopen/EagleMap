@@ -12,7 +12,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.itcast.em.config.BaiduServerConfig;
 import cn.itcast.em.config.EagleConfig;
-import cn.itcast.em.enums.ServerType;
+import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.mapper.TraceMapper;
 import cn.itcast.em.mapper.TraceTerminalMapper;
 import cn.itcast.em.pojo.Trace;
@@ -64,7 +64,7 @@ public class BaiduTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> imple
         long id = IdUtil.getSnowflake().nextId();
         Trace trace = new Trace();
         trace.setId(id);
-        trace.setProvider(ServerType.BAIDU);
+        trace.setProvider(ProviderType.BAIDU);
         trace.setServerId(serverId);
         trace.setName(name);
         trace.setTerminalId(terminalId);
@@ -162,7 +162,7 @@ public class BaiduTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> imple
             queryWrapper.like(Trace::getName, traceName);
         }
 
-        queryWrapper.eq(Trace::getProvider, ServerType.BAIDU);
+        queryWrapper.eq(Trace::getProvider, ProviderType.BAIDU);
 
         return super.list(queryWrapper);
     }
@@ -268,5 +268,10 @@ public class BaiduTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> imple
     @Override
     public int getOrder() {
         return EagleOrdered.TWO;
+    }
+
+    @Override
+    public ProviderType getProvider() {
+        return ProviderType.BAIDU;
     }
 }

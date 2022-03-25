@@ -19,23 +19,20 @@
         </fileSet>
         <!-- 程序运行的启动脚本 -->
         <fileSet>
-            <directory>src/main/resources</directory>
+            <directory>src/main/resources/bin</directory>
             <outputDirectory>EagleMap/bin</outputDirectory>   <!-- 打包的文件解压后放在该目录下 -->
             <includes>
                 <include>*</include>
             </includes>
-            <excludes>
-                <exclude>*.xml</exclude>
-            </excludes>
             <fileMode>0755</fileMode>   <!--文件执行权限-->
         </fileSet>
         <fileSet>
-            <directory>src/main/resources</directory>
-            <outputDirectory>EagleMap/conf</outputDirectory>   <!-- 打包的文件解压后放在该目录下 -->
+            <directory>src/main/resources/conf</directory>
+            <outputDirectory>EagleMap/conf</outputDirectory>
             <includes>
-                <include>*.xml</include>
+                <include>*</include>
             </includes>
-            <fileMode>0755</fileMode>   <!--文件执行权限-->
+            <fileMode>0755</fileMode>
         </fileSet>
         <!--日志-->
         <fileSet>
@@ -43,15 +40,6 @@
             <excludes>
                 <exclude>**/*</exclude>
             </excludes>
-            <fileMode>0755</fileMode>
-        </fileSet>
-        <fileSet>
-            <!-- 配置文件，这里只导入 application-eagle.yml 即可-->
-            <directory>../eagle-map-server/target/classes</directory>
-            <outputDirectory>EagleMap/conf</outputDirectory>
-            <includes>
-                <include>application.yml</include>
-            </includes>
             <fileMode>0755</fileMode>
         </fileSet>
     </fileSets>

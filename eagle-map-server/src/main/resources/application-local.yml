@@ -9,7 +9,7 @@ spring:
 eagle:
   #默认策略，可选参数：BAIDU、AMAP、NONE，默认：NONE
   #如果指定了默认策略，在接口中不指定服务商时才用的策略，如果指定NONE，有系统来决定
-  default-provider-strategy: BAIDU
+  default-provider-strategy: NONE
   baidu-web-api: https://api.map.baidu.com  #百度地图web api服务地址
   baidu-ying-yan-api: http://yingyan.baidu.com #百度地图鹰眼服务地址
   amap-web-api: https://restapi.amap.com #高德地图web api服务地址

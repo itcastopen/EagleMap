@@ -3,15 +3,20 @@ package cn.itcast.em.service.impl;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.itcast.em.config.EagleConfig;
 import cn.itcast.em.enums.ProviderType;
+import cn.itcast.em.exception.EagleMapException;
 import cn.itcast.em.service.EagleOrdered;
 import org.springframework.context.ApplicationContext;
 
 import java.util.Map;
 
 /**
+ * 服务工厂，通过该工厂可以找出 provider 对应的服务提供者的
+ * 如果传入的 provider 找不到会抛出 EagleMapException 异常
+ *
  * @author zzj
  * @version 1.0
  * @date 2022/3/24
@@ -52,7 +57,9 @@ public class EagleMapServiceFactory {
             }
             return (T) bestObject;
         }
-        return null;
+
+        //返回默认提供者
+        throw new EagleMapException(StrUtil.format("The specified provider ({}) was not found. ", provider));
     }
 
 }

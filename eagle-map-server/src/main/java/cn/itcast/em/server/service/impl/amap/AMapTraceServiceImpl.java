@@ -22,10 +22,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -35,8 +37,7 @@ import java.util.Map;
  * 高德地图的终端管理实现
  */
 @Service("AMapTraceService")
-@ConditionalOnBean(AMapServerConfig.class)
-@ConditionalOnProperty(name = "eagle.service-mode", havingValue = "COMPLETE")
+@ConditionalOnBean({AMapServerConfig.class, DataSource.class})
 public class AMapTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> implements TraceService {
 
     @Resource

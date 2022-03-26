@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,8 +24,7 @@ import java.util.stream.Collectors;
  * 百度地图轨迹服务
  */
 @Service("BaiduTraceServerService")
-@ConditionalOnBean(BaiduServerConfig.class)
-@ConditionalOnProperty(name = "eagle.service-mode", havingValue = "COMPLETE")
+@ConditionalOnBean({BaiduServerConfig.class, DataSource.class})
 public class BaiduTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, TraceServer> implements TraceServerService {
 
     @Resource

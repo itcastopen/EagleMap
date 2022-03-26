@@ -24,9 +24,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,8 +40,7 @@ import java.util.stream.Collectors;
  * @date 2022/3/7
  */
 @Service("AMapFenceService")
-@ConditionalOnBean(AMapServerConfig.class)
-@ConditionalOnProperty(name = "eagle.service-mode", havingValue = "COMPLETE")
+@ConditionalOnBean({AMapServerConfig.class, DataSource.class})
 public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFence> implements FenceService {
 
     @Resource

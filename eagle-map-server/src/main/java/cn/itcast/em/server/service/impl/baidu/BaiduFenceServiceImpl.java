@@ -25,9 +25,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -42,8 +44,7 @@ import java.util.stream.Collectors;
  * @date 2022/3/9
  */
 @Service("BaiduFenceService")
-@ConditionalOnBean(BaiduServerConfig.class)
-@ConditionalOnProperty(name = "eagle.service-mode", havingValue = "COMPLETE")
+@ConditionalOnBean({BaiduServerConfig.class, DataSource.class})
 public class BaiduFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFence> implements FenceService {
 
     @Resource

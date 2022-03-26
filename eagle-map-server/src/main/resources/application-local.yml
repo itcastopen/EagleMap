@@ -1,6 +1,6 @@
 server:
   port: 8484 #RESTful服务端口
-#spring:
+spring:
 #  datasource: #数据库的配置
 #    driver-class-name: com.mysql.jdbc.Driver
 #    url: jdbc:mysql://127.0.0.1:3306/eaglemap?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false

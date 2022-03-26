@@ -11,7 +11,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableRetry //启用重试机制
 @EnableTransactionManagement
 @ComponentScan("cn.itcast.em")
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+// @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication
 @EnableConfigurationProperties
 public class EagleMapApplication {
 

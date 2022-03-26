@@ -25,6 +25,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +34,7 @@ import java.util.Map;
  * 百度地图的终端管理实现
  */
 @Service("BaiduTraceTerminalService")
-@ConditionalOnBean(BaiduServerConfig.class)
-@ConditionalOnProperty(name = "eagle.service-mode", havingValue = "COMPLETE")
+@ConditionalOnBean({BaiduServerConfig.class, DataSource.class})
 public class BaiduTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMapper, TraceTerminal> implements TraceTerminalService {
 
     @Resource

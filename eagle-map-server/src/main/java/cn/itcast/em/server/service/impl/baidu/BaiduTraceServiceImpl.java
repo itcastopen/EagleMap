@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +40,7 @@ import java.util.stream.Collectors;
  * 百度地图的轨迹理实现
  */
 @Service("BaiduTraceService")
-@ConditionalOnBean(BaiduServerConfig.class)
-@ConditionalOnProperty(name = "eagle.service-mode", havingValue = "COMPLETE")
+@ConditionalOnBean({BaiduServerConfig.class, DataSource.class})
 public class BaiduTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> implements TraceService {
 
     @Resource

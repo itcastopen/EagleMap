@@ -16,9 +16,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -29,8 +31,7 @@ import java.util.stream.Collectors;
  * 高德地图的轨迹服务实现类
  */
 @Service("AMapTraceServerService")
-@ConditionalOnBean(AMapServerConfig.class)
-@ConditionalOnProperty(name = "eagle.service-mode", havingValue = "COMPLETE")
+@ConditionalOnBean({AMapServerConfig.class, DataSource.class})
 public class AMapTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, TraceServer> implements TraceServerService {
 
     @Resource

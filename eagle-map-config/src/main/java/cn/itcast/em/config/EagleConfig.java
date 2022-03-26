@@ -1,6 +1,7 @@
 package cn.itcast.em.config;
 
 import cn.itcast.em.enums.ProviderType;
+import cn.itcast.em.enums.ServiceMode;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -20,5 +21,6 @@ public class EagleConfig {
     private AMapServerConfig amap;
     private BaiduServerConfig baidu;
     private ProviderType defaultProviderStrategy = ProviderType.NONE;
+    private ServiceMode serviceMode = ServiceMode.BASE;
 
 }

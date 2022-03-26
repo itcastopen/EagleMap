@@ -20,6 +20,7 @@ import cn.itcast.em.vo.PageResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
  */
 @Service("AMapTraceTerminalService")
 @ConditionalOnBean(AMapServerConfig.class)
+@ConditionalOnProperty(name = "eagle.service-mode", havingValue = "COMPLETE")
 public class AMapTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMapper, TraceTerminal> implements TraceTerminalService {
 
     @Resource

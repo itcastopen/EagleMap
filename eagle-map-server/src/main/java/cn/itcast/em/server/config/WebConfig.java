@@ -1,14 +1,26 @@
 package cn.itcast.em.server.config;
 
+import cn.itcast.em.interceptor.ProviderInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private ProviderInterceptor providerInterceptor;
+
+
+    public void addInterceptors(InterceptorRegistry registry) {
+        // 注意拦截器的顺序
+        registry.addInterceptor(this.providerInterceptor).addPathPatterns("/**");
+    }
 
 
     /**

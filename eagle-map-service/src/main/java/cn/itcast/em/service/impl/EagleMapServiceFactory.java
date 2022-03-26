@@ -1,5 +1,6 @@
 package cn.itcast.em.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
@@ -7,8 +8,11 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.itcast.em.config.EagleConfig;
 import cn.itcast.em.enums.ProviderType;
+import cn.itcast.em.enums.ServiceMode;
 import cn.itcast.em.exception.EagleMapException;
+import cn.itcast.em.exception.ServiceModeException;
 import cn.itcast.em.service.EagleOrdered;
+import cn.itcast.em.util.ProviderThreadLocal;
 import org.springframework.context.ApplicationContext;
 
 import java.util.Map;
@@ -23,10 +27,18 @@ import java.util.Map;
  */
 public class EagleMapServiceFactory {
 
+    public static <T> T getService(Class<T> clazz) {
+        return getService(ProviderThreadLocal.get(), clazz);
+    }
+
     public static <T> T getService(ProviderType provider, Class<T> clazz) {
         ApplicationContext applicationContext = SpringUtil.getApplicationContext();
         EagleConfig eagleConfig = applicationContext.getBean(EagleConfig.class);
         Map<String, T> beans = applicationContext.getBeansOfType(clazz);
+        if (CollUtil.isEmpty(beans) && eagleConfig.getServiceMode() == ServiceMode.BASE) {
+            //没有任何实现类，服务模式在BASE下，但是调用了 COMPLETE 下的实现
+            throw new ServiceModeException("EagleMap's current service-mode is 'BASE', please set the service mode to 'COMPLETE'!");
+        }
         ProviderType finalProvider;
         if (provider == ProviderType.NONE) {
             //系统自动选择

@@ -11,6 +11,7 @@ import cn.itcast.em.service.TraceServerService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
  */
 @Service("BaiduTraceServerService")
 @ConditionalOnBean(BaiduServerConfig.class)
+@ConditionalOnProperty(name = "eagle.service-mode", havingValue = "COMPLETE")
 public class BaiduTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, TraceServer> implements TraceServerService {
 
     @Resource

@@ -15,7 +15,7 @@ import java.util.List;
 public class AdminWebConfig implements WebMvcConfigurer {
 
 
-    @Autowired(required = false)
+    @Autowired
     private UserInterceptor userInterceptor;
 
 

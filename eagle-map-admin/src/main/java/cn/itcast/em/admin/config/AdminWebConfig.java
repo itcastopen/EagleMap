@@ -26,7 +26,8 @@ public class AdminWebConfig implements WebMvcConfigurer {
 
     /**
      * 扩展mvc框架的消息转换器
-     * @param converters
+     *
+     * @param converters 转换器
      */
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -35,6 +36,6 @@ public class AdminWebConfig implements WebMvcConfigurer {
         //设置对象转换器，底层使用Jackson将Java对象转为json
         messageConverter.setObjectMapper(new JacksonObjectMapper());
         //将上面的消息转换器对象追加到mvc框架的转换器集合中
-        converters.add(0,messageConverter);
+        converters.add(0, messageConverter);
     }
 }

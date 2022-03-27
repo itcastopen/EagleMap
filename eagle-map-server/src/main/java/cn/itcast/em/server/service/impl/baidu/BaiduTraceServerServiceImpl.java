@@ -6,6 +6,7 @@ import cn.itcast.em.config.BaiduServerConfig;
 import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.mapper.TraceServerMapper;
 import cn.itcast.em.pojo.TraceServer;
+import cn.itcast.em.server.config.MybatisPlusConfig;
 import cn.itcast.em.service.EagleOrdered;
 import cn.itcast.em.service.TraceServerService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
  * 百度地图轨迹服务
  */
 @Service("BaiduTraceServerService")
-@ConditionalOnBean({BaiduServerConfig.class, DataSource.class})
+@ConditionalOnBean({BaiduServerConfig.class, MybatisPlusConfig.class})
 public class BaiduTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, TraceServer> implements TraceServerService {
 
     @Resource

@@ -17,6 +17,7 @@ import cn.itcast.em.mapper.TraceMapper;
 import cn.itcast.em.mapper.TraceTerminalMapper;
 import cn.itcast.em.pojo.Trace;
 import cn.itcast.em.pojo.TraceTerminal;
+import cn.itcast.em.server.config.MybatisPlusConfig;
 import cn.itcast.em.service.EagleOrdered;
 import cn.itcast.em.service.TraceService;
 import cn.itcast.em.vo.PageResult;
@@ -40,7 +41,7 @@ import java.util.stream.Collectors;
  * 百度地图的轨迹理实现
  */
 @Service("BaiduTraceService")
-@ConditionalOnBean({BaiduServerConfig.class, DataSource.class})
+@ConditionalOnBean({BaiduServerConfig.class, MybatisPlusConfig.class})
 public class BaiduTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> implements TraceService {
 
     @Resource

@@ -1,18 +1,11 @@
 package cn.itcast.em.server.filter;
 
 import cn.hutool.core.util.StrUtil;
-import cn.itcast.em.config.EagleConfig;
 import cn.itcast.em.enums.ServiceMode;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportFilter;
 import org.springframework.boot.autoconfigure.AutoConfigurationMetadata;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.EnvironmentAware;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 
 /**
@@ -34,7 +27,7 @@ public class MyAutoConfigurationImportFilter implements AutoConfigurationImportF
         String dataSourceName = DataSourceAutoConfiguration.class.getName();
         for (int i = 0; i < autoConfigurationClasses.length; i++) {
             if (serviceMode == ServiceMode.BASE) {
-                if (StrUtil.equals(dataSourceName, autoConfigurationClasses[i])) {
+                if (StrUtil.equals(autoConfigurationClasses[i], dataSourceName)) {
                     result[i] = false;
                 } else {
                     result[i] = true;

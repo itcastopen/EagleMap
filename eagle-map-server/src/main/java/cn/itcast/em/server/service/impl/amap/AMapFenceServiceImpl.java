@@ -15,6 +15,7 @@ import cn.itcast.em.mapper.TraceFenceMapper;
 import cn.itcast.em.mapper.TraceTerminalMapper;
 import cn.itcast.em.pojo.TraceFence;
 import cn.itcast.em.pojo.TraceTerminal;
+import cn.itcast.em.server.config.MybatisPlusConfig;
 import cn.itcast.em.service.EagleOrdered;
 import cn.itcast.em.service.FenceService;
 import cn.itcast.em.vo.PageResult;
@@ -23,13 +24,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.sql.DataSource;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -40,7 +41,7 @@ import java.util.stream.Collectors;
  * @date 2022/3/7
  */
 @Service("AMapFenceService")
-@ConditionalOnBean({AMapServerConfig.class, DataSource.class})
+@ConditionalOnBean({AMapServerConfig.class, MybatisPlusConfig.class})
 public class AMapFenceServiceImpl extends ServiceImpl<TraceFenceMapper, TraceFence> implements FenceService {
 
     @Resource

@@ -2,18 +2,24 @@ package cn.itcast.em.server.config;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.sql.DataSource;
-
 /**
- * 配置MP的分页插件
+ * 配置MP，只有在COMPLETE模式下才会实例化
  */
 @Configuration
-@ConditionalOnSingleCandidate(DataSource.class)
+@ConditionalOnProperty(name = "eagle.service-mode", havingValue = "COMPLETE")
 public class MybatisPlusConfig {
+
+    @Bean
+    public MapperScannerConfigurer mapperScannerConfigurer() {
+        MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
+        mapperScannerConfigurer.setBasePackage("cn.itcast.em.mapper");
+        return mapperScannerConfigurer;
+    }
 
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {

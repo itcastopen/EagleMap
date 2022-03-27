@@ -14,6 +14,7 @@ import cn.itcast.em.config.EagleConfig;
 import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.mapper.TraceMapper;
 import cn.itcast.em.pojo.Trace;
+import cn.itcast.em.server.config.MybatisPlusConfig;
 import cn.itcast.em.service.EagleOrdered;
 import cn.itcast.em.service.TraceService;
 import cn.itcast.em.vo.PageResult;
@@ -37,7 +38,7 @@ import java.util.Map;
  * 高德地图的终端管理实现
  */
 @Service("AMapTraceService")
-@ConditionalOnBean({AMapServerConfig.class, DataSource.class})
+@ConditionalOnBean({AMapServerConfig.class, MybatisPlusConfig.class})
 public class AMapTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> implements TraceService {
 
     @Resource

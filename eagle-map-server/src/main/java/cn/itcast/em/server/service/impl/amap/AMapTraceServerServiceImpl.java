@@ -10,17 +10,15 @@ import cn.itcast.em.config.EagleConfig;
 import cn.itcast.em.enums.ProviderType;
 import cn.itcast.em.mapper.TraceServerMapper;
 import cn.itcast.em.pojo.TraceServer;
+import cn.itcast.em.server.config.MybatisPlusConfig;
 import cn.itcast.em.service.EagleOrdered;
 import cn.itcast.em.service.TraceServerService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +29,12 @@ import java.util.stream.Collectors;
  * 高德地图的轨迹服务实现类
  */
 @Service("AMapTraceServerService")
-@ConditionalOnBean({AMapServerConfig.class, DataSource.class})
+@ConditionalOnBean({AMapServerConfig.class, MybatisPlusConfig.class})
 public class AMapTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, TraceServer> implements TraceServerService {
+
+    public AMapTraceServerServiceImpl() {
+        System.out.println("ok");
+    }
 
     @Resource
     private EagleConfig eagleConfig;

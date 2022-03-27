@@ -24,7 +24,7 @@ public class ProviderInterceptor implements HandlerInterceptor {
             //如果成功获取到provider参数就将其放入到ThreadLocal中，如果没有获取到也忽略，
             // 主要是考虑到可能还有其他的方式传入
             ProviderThreadLocal.set(ProviderType.valueOf(provider));
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             // e.printStackTrace();  Nothing needs to be done
         }
         return true;

@@ -23,13 +23,13 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                    <finalName>EagleMap-${project.version}</finalName>
+                    <finalName>eagle-map-server</finalName>
                     <appendAssemblyId>false</appendAssemblyId>  <!-- 如果只想有finalName,不需要连接release.xml中的id -->
                     <tarLongFileMode>posix</tarLongFileMode>  <!-- 解决tar大小的限制问题 -->
                     <descriptors>
                         <descriptor>src/main/assembly/release.xml</descriptor>
                     </descriptors>
-                    <outputDirectory>../output</outputDirectory>
+                    <outputDirectory>../deploy</outputDirectory>
                     <attach>false</attach>
                 </configuration>
                 <executions>

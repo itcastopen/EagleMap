@@ -32,10 +32,6 @@ import java.util.stream.Collectors;
 @ConditionalOnBean({AMapServerConfig.class, MybatisPlusConfig.class})
 public class AMapTraceServerServiceImpl extends ServiceImpl<TraceServerMapper, TraceServer> implements TraceServerService {
 
-    public AMapTraceServerServiceImpl() {
-        System.out.println("ok");
-    }
-
     @Resource
     private EagleConfig eagleConfig;
 

@@ -1,7 +1,7 @@
 <assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
-    <id>EagleMap</id>
+    <id>eagle-map-server</id>
     <formats>
         <format>tar.gz</format>
     </formats>
@@ -11,7 +11,7 @@
         <!-- 程序运行的jar包 -->
         <fileSet>
             <directory>../eagle-map-server/target/</directory>
-            <outputDirectory>EagleMap/target</outputDirectory>
+            <outputDirectory>eagle-map-server/target</outputDirectory>
             <includes>
                 <include>eagle-map-server.jar</include>
             </includes>
@@ -20,7 +20,7 @@
         <!-- 程序运行的启动脚本 -->
         <fileSet>
             <directory>src/main/resources/bin</directory>
-            <outputDirectory>EagleMap/bin</outputDirectory>   <!-- 打包的文件解压后放在该目录下 -->
+            <outputDirectory>eagle-map-server/bin</outputDirectory>   <!-- 打包的文件解压后放在该目录下 -->
             <includes>
                 <include>*</include>
             </includes>
@@ -28,7 +28,7 @@
         </fileSet>
         <fileSet>
             <directory>src/main/resources/conf</directory>
-            <outputDirectory>EagleMap/conf</outputDirectory>
+            <outputDirectory>eagle-map-server/conf</outputDirectory>
             <includes>
                 <include>*</include>
             </includes>
@@ -36,7 +36,7 @@
         </fileSet>
         <!--日志-->
         <fileSet>
-            <outputDirectory>EagleMap/logs</outputDirectory> <!--创建空目录-->
+            <outputDirectory>eagle-map-server/logs</outputDirectory> <!--创建空目录-->
             <excludes>
                 <exclude>**/*</exclude>
             </excludes>

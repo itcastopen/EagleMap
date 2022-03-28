@@ -9,7 +9,7 @@ spring:
 eagle:
   #服务模式，可选参数：BASE、COMPLETE，默认：BASE
   #BASE模式中无需配置数据库，只保留基础的地图服务
-  service-mode: BASE
+  service-mode: COMPLETE
   #默认策略，可选参数：BAIDU、AMAP、NONE，默认：NONE
   #如果指定了默认策略，在接口中不指定服务商时才用的策略，如果指定NONE，有系统来决定
   default-provider-strategy: NONE

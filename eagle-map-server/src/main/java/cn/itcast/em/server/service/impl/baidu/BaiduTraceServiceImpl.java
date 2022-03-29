@@ -262,8 +262,8 @@ public class BaiduTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> imple
             trace.setStartPoint(startJsonObj.getStr("longitude") + "," + startJsonObj.getStr("latitude"));
             trace.setEndPoint(endJsonObj.getStr("longitude") + "," + endJsonObj.getStr("latitude"));
 
-            //设置时间
-            trace.setTime(endJsonObj.getLong("loc_time") - startJsonObj.getLong("loc_time"));
+            //设置时间，这里需要将秒转化成毫秒
+            trace.setTime((endJsonObj.getLong("loc_time") - startJsonObj.getLong("loc_time")) * 1000);
 
             return trace;
         });

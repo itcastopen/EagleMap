@@ -149,6 +149,7 @@ public class BaiduTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> imple
         Page<Trace> pageInfo = new Page<>(page, pageSize);
         LambdaQueryWrapper<Trace> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByDesc(Trace::getCreated);
+        queryWrapper.eq(Trace::getProvider, ProviderType.BAIDU);
 
         super.page(pageInfo, queryWrapper);
 

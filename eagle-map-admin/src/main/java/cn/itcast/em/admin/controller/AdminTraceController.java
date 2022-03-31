@@ -24,6 +24,7 @@ import cn.itcast.em.vo.R;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -269,5 +270,29 @@ public class AdminTraceController {
         }
 
         return R.success(voPageResult);
+    }
+
+    /**
+     * 查询轨迹缩略图
+     *
+     * @param provider   服务提供者
+     * @param serverId   服务id
+     * @param terminalId 终端id
+     * @param traceId    轨迹id
+     * @param param      其他参数，用于查询轨迹，json格式
+     * @param width      图片宽度，默认：300
+     * @param height     图片高度，默认：300
+     * @param response   响应对象
+     */
+    @GetMapping("/trace/image")
+    public void queryTraceImage(@RequestParam(value = "provider", defaultValue = "NONE") ProviderType provider,
+                                @RequestParam(value = "serverId") Long serverId,
+                                @RequestParam(value = "terminalId") Long terminalId,
+                                @RequestParam(value = "traceId") Long traceId,
+                                @RequestParam(value = "param", required = false) String param,
+                                @RequestParam(value = "width", required = false) Integer width,
+                                @RequestParam(value = "height", required = false) Integer height,
+                                HttpServletResponse response) {
+        this.traceController.queryTraceImage(provider, serverId, terminalId, traceId, param, width, height, response);
     }
 }

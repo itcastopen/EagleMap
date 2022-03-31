@@ -1,16 +1,16 @@
-* What is EagleMap?
-    * [What is EagleMap](zh-cn/more-pages)
-    * [Concepts](zh-cn/guide)
-    * [Architecture](zh-cn/guide)
-* Quick Start
-    * [Quick Start](zh-cn/quickstart)
-    * [SDK Usage](zh-cn/guide)
-    * [Visual management system](zh-cn/guide)
-* REST Interface Documentation
-    * [Basic map services](zh-cn/quickstart)
-    * [Map trace service](zh-cn/quickstart)
-    * [Electronic fence service](zh-cn/quickstart)
+* [Brief Introduction](/en/)
+* Introduction
+  * [Install](/zh-cn/quickstart)
+  * [SDK Usage](guide)
+  * [Visual management system](guide)
+* REST interface documentation
+  * [Basic map services](quickstart)
+  * [Map trace service](quickstart)
+  * [Electronic fence service](quickstart)
+* SDK interface documentation
+  * [Basic map services](quickstart)
+  * [Map trace service](quickstart)
+  * [Electronic fence service](quickstart)
 * Extend
-    * [Access to new map service providers](zh-cn/quickstart)
-    * [Expand new features](zh-cn/guide)
-    
+  * [Access to new map service providers](quickstart)
+  * [Expand new features](guide)

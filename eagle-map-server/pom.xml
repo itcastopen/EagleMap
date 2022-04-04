@@ -67,7 +67,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.1.0.RELEASE</version>
                 <configuration>
-                    <mainClass>cn.itcast.em.server.EagleMapApplication</mainClass>
+                    <mainClass>com.itheima.em.server.EagleMapApplication</mainClass>
                     <outputDirectory>./target</outputDirectory>
                 </configuration>
                 <executions>

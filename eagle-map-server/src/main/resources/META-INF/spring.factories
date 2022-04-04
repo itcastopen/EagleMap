@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.AutoConfigurationImportFilter=\
-  cn.itcast.em.server.filter.MyAutoConfigurationImportFilter
+  com.itheima.em.server.filter.MyAutoConfigurationImportFilter

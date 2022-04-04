@@ -14,4 +14,4 @@ mybatis-plus:
     db-config:
       id-type: ASSIGN_ID
       table-prefix: eagle_
-  typeEnumsPackage: cn.itcast.em.enums
+  typeEnumsPackage: com.itheima.em.enums

@@ -2,11 +2,11 @@
 
 这个安装手册是帮忙您快速在您的电脑上，下载、安装并使用 EagleMap。
 
-## 版本选择
+# 版本选择
 
 当前推荐的稳定版本为1.0。
 
-## 环境准备
+# 环境准备
 
 EagleMap 依赖 Java 环境来运行。如果您是从代码开始构建并运行EagleMap，还需要为此配置Maven环境，请确保是在以下版本环境中安装使用:
 
@@ -14,11 +14,11 @@ EagleMap 依赖 Java 环境来运行。如果您是从代码开始构建并运�
 2. 64 bit JDK 1.8+；[下载](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) & [配置](https://docs.oracle.com/cd/E19182-01/820-7851/inst_cli_jdk_javahome_t/)。
 3. Maven 3.2.x+；[下载](https://maven.apache.org/download.cgi) & [配置](https://maven.apache.org/settings.html)。
 
-## 下载源码或者安装包
+# 下载源码或者安装包
 
 你可以通过源码、压缩包以及docker镜像的方式来获取 EagleMap。
 
-### 源码方式
+## 源码方式
 
 ~~~bash
 git clone https://gitee.com/itcastopen/EagleMap.git
@@ -35,7 +35,7 @@ cd eagle-map-server/bin
 sh startup.sh
 ~~~
 
-### 压缩包方式
+## 压缩包方式
 
 ~~~bash
 #解压eagle-map-server.tar.gz，进入bin目录启动服务
@@ -44,7 +44,7 @@ cd eagle-map-server/bin
 sh startup.sh
 ~~~
 
-### docker方式
+## docker方式
 
 ~~~bash
 #拉取镜像
@@ -62,9 +62,11 @@ docker start eagle-map-server
 
 ~~~
 
-### application.yml文件
+## application.yml文件
 
-!> 在application.yml配置文件中，baidu和amap的配置至少配置一项，否则启动失败。
+!> **注意1：在application.yml配置文件中，baidu和amap的配置至少配置一项，否则启动失败。**
+
+!> **注意2：数据库的支持目前只支持MySQL，创建脚本在conf目录下的eaglemap-mysql.sql文件。**
 
 ~~~yml
 server:

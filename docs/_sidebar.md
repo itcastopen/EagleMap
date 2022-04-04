@@ -1,16 +1,10 @@
 * [简介](/zh-cn/)
 * 入门
     * [安装](/zh-cn/install)
-    * [SDK使用](guide)
+    * [概念](/zh-cn/concepts)
+    * [SDK使用](/zh-cn/sdk.md)
     * [可视化管理系统](guide)
-* REST接口文档
-    * [地图基础服务](quickstart)
-    * [地图轨迹服务](quickstart)
-    * [电子围栏服务](quickstart)
-* SDK接口文档
-    * [地图基础服务](quickstart)
-    * [地图轨迹服务](quickstart)
-    * [电子围栏服务](quickstart)
+* [RESTful文档](/zh-cn/restapi.md)
 * 扩展
-    * [接入新的地图服务商](quickstart)
-    * [扩展新的功能](guide)
+    * [扩展新的功能](/zh-cn/new-function.md)
+    * [接入新的地图服务商](/zh-cn/new-provider.md)

@@ -2,7 +2,7 @@
 logs
 rebel.xml
 target/
-output/
+deploy/
 !.mvn/wrapper/maven-wrapper.jar
 log.path_IS_UNDEFINED
 .DS_Store

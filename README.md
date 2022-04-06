@@ -7,6 +7,8 @@
 
 EagleMap是一个功能强大、简单易用、支持多地图服务商的中台服务系统，其设计目标是简化业务系统对于地图服务的使用。目前对接了国内主流的两大地图服务商：百度地图和高德地图，未来考虑将腾讯地图接入进来。
 
+EagleMap官网：https://eaglemap.itheima.net
+
 ## 特性 
 
 - EagleMap具有高扩展性的设计，可以方便的扩展对接三方地图服务商。
@@ -21,7 +23,7 @@ EagleMap是一个功能强大、简单易用、支持多地图服务商的中台
 
 ## 版本发布历史
 
-?> 1.0-SNAPSHOT  -> 发布于2022.3.26
+> 1.0-SNAPSHOT  -> 发布于2022.3.26
 
 ## 下载
 
@@ -29,9 +31,11 @@ EagleMap是一个功能强大、简单易用、支持多地图服务商的中台
 
 | 项目                         | 源码仓库地址                                                 |
 | ---------------------------- | ------------------------------------------------------------ |
-| EagleMap                     |                                                              |
+| EagleMap                     | https://gitee.com/itcastopen/EagleMap.git<br/>https://github.com/itcastopen/EagleMap.git |
 | EagleMap-sdk                 | https://gitee.com/itcastopen/EagleMap-sdk.git<br/>https://github.com/itcastopen/EagleMap-sdk.git |
 | eaglemap-spring-boot-starter | https://gitee.com/itcastopen/eaglemap-spring-boot-starter.git<br />https://github.com/itcastopen/eaglemap-spring-boot-starter.git |
+
+sdk的具体使用方法：https://eaglemap.itheima.net/#/zh-cn/sdk
 
 ### Maven依赖
 

@@ -233,9 +233,9 @@ public class AdminTraceController {
     @GetMapping("/terminal")
     public R<PageResult<TraceTerminalVO>> queryTerminalList(@RequestParam(value = "provider", defaultValue = "NONE") ProviderType provider,
                                                             @RequestParam(value = "serverId") Long serverId,
-                                                            @PathVariable(value = "fenceId", required = false) Long fenceId,
-                                                            @PathVariable(value = "terminalId", required = false) Long terminalId,
-                                                            @PathVariable(value = "terminalName", required = false) String terminalName,
+                                                            @RequestParam(value = "fenceId", required = false) Long fenceId,
+                                                            @RequestParam(value = "terminalId", required = false) Long terminalId,
+                                                            @RequestParam(value = "terminalName", required = false) String terminalName,
                                                             @RequestParam(value = "page", defaultValue = "1") Integer page,
                                                             @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
 

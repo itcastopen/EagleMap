@@ -1,12 +1,13 @@
 package com.itheima.em.server.service.impl.amap;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.em.config.AMapServerConfig;
 import com.itheima.em.config.EagleConfig;
 import com.itheima.em.enums.ProviderType;
@@ -18,16 +19,14 @@ import com.itheima.em.service.EagleOrdered;
 import com.itheima.em.service.TraceServerService;
 import com.itheima.em.service.TraceTerminalService;
 import com.itheima.em.vo.PageResult;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 高德地图的终端管理实现
@@ -167,48 +166,36 @@ public class AMapTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMappe
 
     @Override
     public PageResult<TraceTerminal> queryList(Long serverId, Long terminalId, String name, Integer page, Integer pageSize) {
-        String url = this.eagleConfig.getAmapTsApi() + "/v1/track/terminal/list";
-        //封装请求参数
-        Map<String, Object> requestParam = new HashMap<>();
-        requestParam.put("sid", serverId);
-        requestParam.put("tid", terminalId);
-        requestParam.put("name", name);
-        requestParam.put("page", page);
-
-        return this.aMapWebApiService.doGet(url, requestParam, response -> {
-            PageResult pageResult = new PageResult();
-            pageResult.setPage(page);
-            pageResult.setPageSize(pageSize);
-            String body = response.body();
-            JSONObject json = JSONUtil.parseObj(response.body());
-            if (!response.isOk() || json.getInt("errcode") != 10000) {
-                return pageResult;
-            }
-
-            JSONArray jsonArray = json.getJSONObject("data").getJSONArray("results");
-            if (CollUtil.isEmpty(jsonArray)) {
-                return pageResult;
-            }
-
-            pageResult.setTotal(json.getJSONObject("data").getInt("count"));
-
-            pageResult.setItems(jsonArray.stream().map(o -> {
-                JSONObject obj = ((JSONObject) o);
-                TraceTerminal traceTerminal = new TraceTerminal();
-                traceTerminal.setServerId(serverId);
-                traceTerminal.setProvider(ProviderType.AMAP);
-                traceTerminal.setTerminalId(obj.getLong("tid"));
-                traceTerminal.setName(obj.getStr("name"));
-                traceTerminal.setDesc(obj.getStr("desc"));
-                traceTerminal.setCreated(new Date(obj.getLong("createtime")));
-                traceTerminal.setUpdated(new Date(obj.getLong("locatetime")));
-                traceTerminal.setProps(Convert.toStr(obj.getJSONObject("props")));
-                return traceTerminal;
-            }).collect(Collectors.toList()));
-
+        PageResult<TraceTerminal> pageResult = new PageResult<>();
+        pageResult.setPage(page);
+        pageResult.setPageSize(pageSize);
+        pageResult.setItems(new ArrayList<>());
+        if (null != terminalId) {
+            //根据主键id查询
+            pageResult.getItems().add(super.getById(terminalId));
             return pageResult;
+        }
 
-        });
+        if (StrUtil.isNotEmpty(name)) {
+            //根据名称查询
+            LambdaQueryWrapper<TraceTerminal> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.like(TraceTerminal::getName, name);
+            queryWrapper.eq(TraceTerminal::getProvider, ProviderType.AMAP);
+            queryWrapper.eq(TraceTerminal::getServerId, serverId);
+            pageResult.setItems(super.list(queryWrapper));
+            return pageResult;
+        }
+
+        //数据库查询列表
+        LambdaQueryWrapper<TraceTerminal> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(TraceTerminal::getProvider, ProviderType.AMAP);
+        queryWrapper.eq(TraceTerminal::getServerId, serverId);
+        queryWrapper.orderByDesc(TraceTerminal::getCreated);
+
+        Page<TraceTerminal> traceTerminalPage = new Page<>(page, pageSize);
+
+        Page<TraceTerminal> terminalPage = super.page(traceTerminalPage, queryWrapper);
+        return pageResult.convert(terminalPage);
     }
 
     @Override

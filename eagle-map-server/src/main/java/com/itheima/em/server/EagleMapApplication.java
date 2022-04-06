@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableRetry //启用重试机制
 @EnableTransactionManagement
-@ComponentScan("cn.itcast.em")
+@ComponentScan("com.itheima.em")
 @SpringBootApplication
 @EnableConfigurationProperties
 public class EagleMapApplication {

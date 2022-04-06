@@ -180,10 +180,10 @@ public class BaiduTraceTerminalServiceImpl extends ServiceImpl<TraceTerminalMapp
         if (StrUtil.isNotEmpty(name)) {
             //根据名称查询
             LambdaQueryWrapper<TraceTerminal> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(TraceTerminal::getName, name);
+            queryWrapper.like(TraceTerminal::getName, name);
             queryWrapper.eq(TraceTerminal::getProvider, ProviderType.BAIDU);
             queryWrapper.eq(TraceTerminal::getServerId, serverId);
-            pageResult.getItems().add(super.getOne(queryWrapper));
+            pageResult.setItems(super.list(queryWrapper));
             return pageResult;
         }
 

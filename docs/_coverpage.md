@@ -7,6 +7,6 @@
 - 支持多平台安装部署
 - 自由扩展功能、可视化管理
 
-[GitHub](https://github.com/docsifyjs/docsify/)
-[Gitee](https://github.com/docsifyjs/docsify/)
+[Gitee](https://gitee.com/itcastopen/EagleMap)
+[GitHub](https://github.com/itcastopen/EagleMap)
 [快速开始](/zh-cn/)

@@ -29,7 +29,7 @@ EagleMap是一个功能强大、简单易用、支持多地图服务商的中台
 
 | 项目                         | 源码仓库地址                                                 |
 | ---------------------------- | ------------------------------------------------------------ |
-| EagleMap                     | https://gitee.com/itcastopen/EagleMap.git                                                             |
+| EagleMap                     | https://gitee.com/itcastopen/EagleMap.git<br/>https://github.com/itcastopen/EagleMap.git                                                             |
 | EagleMap-sdk                 | https://gitee.com/itcastopen/EagleMap-sdk.git<br/>https://github.com/itcastopen/EagleMap-sdk.git |
 | eaglemap-spring-boot-starter | https://gitee.com/itcastopen/eaglemap-spring-boot-starter.git<br />https://github.com/itcastopen/eaglemap-spring-boot-starter.git |
 

@@ -15,3 +15,8 @@ mybatis-plus:
       id-type: ASSIGN_ID
       table-prefix: eagle_
   typeEnumsPackage: com.itheima.em.enums
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        web: debug

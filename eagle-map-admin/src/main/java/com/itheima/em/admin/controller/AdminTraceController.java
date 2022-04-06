@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.PageUtil;
 import cn.hutool.core.util.StrUtil;
+import com.itheima.em.admin.annotation.NoAuthorization;
 import com.itheima.em.admin.vo.TraceServerVO;
 import com.itheima.em.admin.vo.TraceTerminalVO;
 import com.itheima.em.api.controller.FenceController;
@@ -285,6 +286,7 @@ public class AdminTraceController {
      * @param response   响应对象
      */
     @GetMapping("/trace/image")
+    @NoAuthorization
     public void queryTraceImage(@RequestParam(value = "provider", defaultValue = "NONE") ProviderType provider,
                                 @RequestParam(value = "serverId") Long serverId,
                                 @RequestParam(value = "terminalId") Long terminalId,

@@ -28,7 +28,7 @@ public class Knife4jConfiguration {
                 .groupName("1.0版本")
                 .select()
                 //这里指定Controller扫描包路径
-                .apis(RequestHandlerSelectors.basePackage("cn.itcast.em.api.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.itheima.em.api.controller"))
                 .paths(PathSelectors.any())
                 .build();
         return docket;

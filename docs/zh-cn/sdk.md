@@ -103,7 +103,7 @@ eagle:
 **第三步，测试用例**
 
 ~~~java
-package cn.itcast.em.boot;
+package com.itheima.em.boot;
 
 import EagleMapTemplate;
 import IpResult;

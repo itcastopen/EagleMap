@@ -1,0 +1,12 @@
+stages:
+  - build
+build:
+  stage: build
+  tags:
+    - aliyun-kubernetes
+  script: 
+    - sudo rm -rf /data/nginx/html/${CI_PROJECT_NAME}/*
+    - sudo cp -rf ./docs/* /data/nginx/html/${CI_PROJECT_NAME}/
+    - sudo chown nginx.nginx -R /data/nginx/html/${CI_PROJECT_NAME}
+  only:
+    - master

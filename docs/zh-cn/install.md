@@ -153,3 +153,5 @@ eagle:
 高德地图：
 
 > web API的申请：https://lbs.amap.com/dev/key
+>
+> 申请时注意【服务平台】选项，需要申请【Web端(JS API)】和【Web服务】的key。

@@ -140,3 +140,16 @@ eagle:
 #      type: xxxxx
 ~~~
 
+# 地图服务商key
+
+使用地图服务必须向地图服务商申请key。
+
+> **百度地图：**
+>
+> web API的申请：https://lbsyun.baidu.com/apiconsole/key?application=key#/home
+>
+> 鹰眼服务的申请：https://lbsyun.baidu.com/index.php?title=yingyan/guide/getkey
+
+高德地图：
+
+> web API的申请：https://lbs.amap.com/dev/key

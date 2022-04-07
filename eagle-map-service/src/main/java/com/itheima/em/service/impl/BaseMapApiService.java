@@ -65,7 +65,7 @@ public abstract class BaseMapApiService implements MapApiService {
             return function.callback(response);
         } catch (Exception e) {
             //出现错误，抛出异常进行重试
-            String msg = StrUtil.format("Map service provider call failed! url = {}, method = {}, param = {}", url, method, param);
+            String msg = StrUtil.format("Map service provider call failed! url = {}, method = {}, param = {}, msg = {}", url, method, param, e.getMessage());
             throw new RuntimeException(msg, e);
         }
     }

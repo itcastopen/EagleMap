@@ -143,7 +143,7 @@ public class TraceController extends BaseController {
                                 HttpServletResponse response) {
         TraceService traceService = EagleMapServiceFactory.getService(provider, TraceService.class);
         Trace result = traceService.queryTraceInfo(serverId, terminalId, traceId, JSONUtil.toBean(param, Map.class));
-        if (null == result) {
+        if (null == result || StrUtil.isEmpty(result.getPointList())) {
             String msg = "Query failed. The track information cannot be found.";
             throw new EagleMapException(msg);
         }

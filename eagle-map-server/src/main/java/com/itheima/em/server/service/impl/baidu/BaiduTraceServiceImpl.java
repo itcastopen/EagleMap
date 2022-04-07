@@ -10,6 +10,9 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.em.config.BaiduServerConfig;
 import com.itheima.em.config.EagleConfig;
 import com.itheima.em.enums.ProviderType;
@@ -21,9 +24,6 @@ import com.itheima.em.server.config.MybatisPlusConfig;
 import com.itheima.em.service.EagleOrdered;
 import com.itheima.em.service.TraceService;
 import com.itheima.em.vo.PageResult;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -186,8 +186,9 @@ public class BaiduTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> imple
             return null;
         }
 
-        if (ObjectUtil.equal(trace.getStatus(), 1) && CollUtil.isNotEmpty(param) &&
-                Convert.toBool(param.get("local"), true)) {
+        if (ObjectUtil.equal(trace.getStatus(), 1) &&
+                (CollUtil.isEmpty(param) || Convert.toBool(param.get("local"), true))) {
+            //轨迹已结束，并且没有设置param 或 设置的 local为true，直接返回数据
             return trace;
         }
 
@@ -217,6 +218,10 @@ public class BaiduTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> imple
         requestParam.put("page_index", page);
         requestParam.put("page_size", pageSize);
         Trace traceInfo = executeQuery(url, requestParam);
+        if (null == traceInfo) {
+            //没有查询到轨迹数据，直接返回
+            return;
+        }
         if (traceInfo.getSize() > pageSize) {
             //存在下一页数据，循环分页获取数据
             JSONArray jsonArray = JSONUtil.parseArray(traceInfo.getPointList());

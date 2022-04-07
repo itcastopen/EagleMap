@@ -223,8 +223,9 @@ public class AMapTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> implem
             return null;
         }
 
-        if (ObjectUtil.equal(trace.getStatus(), 1) && CollUtil.isNotEmpty(param) &&
-                Convert.toBool(param.get("local"), true)) {
+        if (ObjectUtil.equal(trace.getStatus(), 1) &&
+                (CollUtil.isEmpty(param) || Convert.toBool(param.get("local"), true))) {
+            //轨迹已结束，并且没有设置param 或 设置的 local为true，直接返回数据
             return trace;
         }
 
@@ -250,6 +251,10 @@ public class AMapTraceServiceImpl extends ServiceImpl<TraceMapper, Trace> implem
         requestParam.put("page", page);
         requestParam.put("pagesize", pageSize);
         Trace traceInfo = executeQuery(url, requestParam);
+        if (null == traceInfo) {
+            //没有查询到数据
+            return;
+        }
         if (traceInfo.getSize() > pageSize) {
             //存在下一页数据，循环分页获取数据
             JSONArray jsonArray = JSONUtil.parseArray(traceInfo.getPointList());

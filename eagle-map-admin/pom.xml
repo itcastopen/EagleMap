@@ -5,7 +5,7 @@
     <parent>
         <artifactId>eagle-map</artifactId>
         <groupId>com.itheima.em</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,12 +16,12 @@
         <dependency>
             <groupId>com.itheima.em</groupId>
             <artifactId>eagle-map-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>com.itheima.em</groupId>
             <artifactId>eagle-map-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

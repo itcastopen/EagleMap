@@ -16,6 +16,7 @@ public class EagleMapException extends RuntimeException {
     private String msg;
 
     public EagleMapException(String msg) {
+        super(msg);
         this.msg = msg;
     }
 }
